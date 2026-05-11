@@ -1,160 +1,176 @@
-# OpenClaw multi-agent demo
+# OpenClaw Multi-Agent Pipeline
 
-A toy demo that wires three Python "agent" processes through an
-[OpenClaw](https://openclaw.ai/) gateway:
+A working demonstration of a multi-agent pipeline built on [OpenClaw](https://openclaw.ai/). Three independent AI agents — a **Researcher**, a **Writer**, and a **Critic** — collaborate on a topic of your choice, each running as a separate service and communicating through the OpenClaw gateway.
+
+## How It Works
+
+Given a topic (e.g. `"small modular reactors"`), the pipeline:
+
+1. **Researcher** — fetches facts from Wikipedia (with a canned offline fallback) and uses an LLM to distill them into concise bullet points.
+2. **Writer** — receives those bullets and drafts a structured article using an LLM.
+3. **Critic** — reviews the article and returns a structured JSON critique with a score, verdict, and list of issues.
+
+Each agent is a FastAPI server implementing the OpenAI-compatible Responses API (`POST /v1/responses`). The OpenClaw gateway handles routing: messages addressed to a given `agent_id` are forwarded to the corresponding service over Bearer-authenticated HTTP.
 
 ```
-run.py (orchestrator, openclaw-sdk)
-        │
-        ▼
-   OpenClaw Gateway   (dev profile: ws://127.0.0.1:19001)
-        │  POST /v1/responses  (Bearer auth)
-        ├──────────► bots/researcher.py  :8001  (HTTP fetch + LLM bullets)
-        ├──────────► bots/writer.py      :8002  (LLM draft + word-count loop)
-        └──────────► bots/critic.py      :8003  (programmatic checks + LLM JSON)
+run.py  (orchestrator via openclaw-sdk)
+   │
+   ▼
+OpenClaw Gateway  (ws://127.0.0.1:19001)
+   │  POST /v1/responses
+   ├──► bots/researcher.py  :8001
+   ├──► bots/writer.py      :8002
+   └──► bots/critic.py      :8003
 ```
-
-Each bot is a FastAPI server implementing the OpenAI-compatible Responses
-API (`POST /v1/responses`). OpenClaw routes messages addressed to a given
-`agent_id` to the corresponding adapter URL. Bots make their own LLM calls
-directly to Anthropic via the `anthropic` SDK (decoupled from OpenClaw).
-
-## Status of this scaffold
-
-This was built and partially exercised on one machine; you're picking it up
-on another. What's done and what's left:
-
-- ✅ Project structure, three bot adapters, orchestrator
-- ✅ FastAPI adapter responding 200 on `/healthz` and `/v1/responses`
-- ✅ OpenClaw 2026.5.7 installed locally (`./node_modules/.bin/openclaw`)
-- ✅ OpenClaw dev profile onboarded at `~/.openclaw-dev/` (port 19001)
-- ⛔ **LLM call**: blocked because the `ANTHROPIC_API_KEY` available in the
-  Claude Code shell is rejected by `api.anthropic.com` (looks like a
-  Claude-Code-scoped token, not a regular Anthropic API key). You'll need a
-  real Anthropic API key to run the LLM hop.
-- ⏳ **Not yet done**: patching OpenClaw config to register the three
-  `*-adapter` providers + three `*-agent` records, and starting the gateway.
-  See "Finishing on the new machine" below.
 
 ## Prerequisites
 
-- Python 3.11+ (tested on 3.12)
-- Node.js 22.16+ or 24+
-- A real Anthropic API key (or swap to OpenAI — see [bots/_llm.py](bots/_llm.py))
+- Python 3.11+ with the `experiments-env` conda environment (or any env with the packages below)
+- Node.js 18+
+- An OpenAI API key (`gpt-4o-mini` by default; configurable via `BASE_LLM_MODEL`)
 
-## One-time setup
+## Setup
+
+### 1. Install Python dependencies
 
 ```bash
-# Python
-python3 -m venv .venv
-source .venv/bin/activate
+conda activate experiments-env
 pip install -r requirements.txt
-
-# OpenClaw (local install — keeps state under ./node_modules)
-npm install                # picks up package.json
 ```
 
-## Configure OpenClaw (dev profile, isolated)
+Or with a plain venv:
 
 ```bash
-# 1. Onboard without provider creds (we add them below).
+python3 -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+### 2. Install OpenClaw
+
+```bash
+npm install
+```
+
+This installs OpenClaw locally under `./node_modules/.bin/openclaw`.
+
+### 3. Onboard OpenClaw (first time only)
+
+```bash
 ./node_modules/.bin/openclaw --dev onboard \
   --non-interactive --accept-risk --flow quickstart \
   --auth-choice skip \
   --workspace "$HOME/.openclaw-dev/workspace" \
   --gateway-bind loopback --gateway-port 19001
+```
 
-# 2. Register the three adapter providers + three agents (see TODO below).
-bash scripts/setup_openclaw.sh
+### 4. Register the agents
 
-# 3. Pull the auto-generated gateway token into .env.
-GATEWAY_TOKEN=$(python -c "import json; print(json.load(open('$HOME/.openclaw-dev/openclaw.json'))['gateway']['auth']['token'])")
+```bash
+PATH="$PWD/node_modules/.bin:$PATH" bash scripts/setup_openclaw.sh
+```
+
+This registers the three adapter providers and agent entries in OpenClaw's config and generates a random `ADAPTER_SECRET` in `.env`.
+
+### 5. Configure environment variables
+
+Copy the example and fill in your OpenAI key:
+
+```bash
 cp .env.example .env
-sed -i "s/^OPENCLAW_GATEWAY_TOKEN=.*/OPENCLAW_GATEWAY_TOKEN=$GATEWAY_TOKEN/" .env
 ```
 
-## Set the LLM key
+Edit `.env`:
 
-```bash
-export ANTHROPIC_API_KEY=sk-ant-...   # a real one, not Claude Code's
+```env
+OPENAI_API_KEY=sk-...
+BASE_LLM_MODEL=gpt-4o-mini   # or gpt-4o
 ```
 
-## Run
+The `ADAPTER_SECRET` is auto-generated by `setup_openclaw.sh`. The `OPENCLAW_GATEWAY_TOKEN` is read from `~/.openclaw-dev/openclaw.json` automatically by the SDK.
+
+## Running
+
+Open two terminals from the project root.
+
+**Terminal 1 — start the gateway:**
 
 ```bash
-# Terminal 1: the gateway
+cd openclaw
 ./node_modules/.bin/openclaw --dev gateway
-
-# Terminal 2: bots + orchestrator
-bash scripts/run_all.sh "small modular reactors"
 ```
 
-Bot stdout/stderr lands in `.logs/<bot>.log`.
+The gateway is managed by launchd on macOS; if it reports "already running", it is healthy and you can skip this step.
 
-## Direct adapter sanity check (no gateway, no openclaw-sdk)
-
-Skip the gateway and the orchestrator — just verify a bot does its job:
+**Terminal 2 — run the pipeline:**
 
 ```bash
-.venv/bin/python -m bots.researcher &
-sleep 2
-curl -s -H "Authorization: Bearer demo-secret-1234" \
-     -H 'Content-Type: application/json' \
-     -d '{"input":"Research this topic: superconductors"}' \
-     http://127.0.0.1:8001/v1/responses | jq .output[0].content[0].text
+cd openclaw
+conda activate experiments-env
+PYTHON=$(which python) bash scripts/run_all.sh "small modular reactors"
 ```
 
-This is what we got working on the source machine; it confirms the FastAPI
-adapter + OpenResponses envelope are correct. Failure here means the LLM
-call is broken (most likely the API key issue noted above).
+Replace `"small modular reactors"` with any topic. Bot logs are written to `.logs/<bot>.log`.
 
-## Finishing on the new machine — TODO list
+### Expected output
 
-1. **Make sure `scripts/setup_openclaw.sh` works against the actual schema.**
-   The script as written uses `openclaw config set "models.providers.X" '<json>'`
-   for each adapter. The CLI's batch syntax may want `openclaw config patch
-   --stdin` with a single JSON5 object covering everything. Schema cheat
-   sheet for `models.providers.<name>`:
-   ```jsonc
-   {
-     baseUrl: "http://127.0.0.1:8001",
-     apiKey: "demo-secret-1234",            // string OR SecretRef object
-     auth: "api-key",
-     models: [{ id: "researcher-team", api: "openai-responses", input: ["text"] }]
-   }
-   ```
-   And for `agents.list[*]`: `{ id: "researcher-agent", model: "researcher-adapter/researcher-team" }`.
-2. **Verify `openclaw-sdk` reaches the gateway.** `OpenClawClient.connect()`
-   auto-detects via `OPENCLAW_GATEWAY_WS_URL`; pass `api_key` (the gateway
-   token) explicitly if auto-detect isn't picking up `OPENCLAW_GATEWAY_TOKEN`.
-3. **Verify the adapter→Anthropic LLM call** with a real key (the blocker
-   we hit). Once the LLM responds, the rest of the chain should work.
-4. **Run [run.py](run.py)** end-to-end and watch `~/.openclaw-dev/logs/` for
-   the three `POST /v1/responses` entries proving the gateway is in the
-   path.
+```
+[researcher-agent] ▶ Research this topic: small modular reactors
+[researcher-agent] ✓ 5443 ms
+[writer-agent] ▶ Write an article using these bullets: ...
+[writer-agent] ✓ 8703 ms
+[critic-agent] ▶ Critique this article and return JSON only: ...
+[critic-agent] ✓ 3468 ms
 
-## Layout
+=== ARTICLE ===
 
-| Path | Purpose |
-|------|---------|
-| [run.py](run.py) | Orchestrator: `client.get_agent(...).execute(...)` x3 |
-| [bots/_adapter.py](bots/_adapter.py) | FastAPI factory: `/v1/responses`, Bearer auth, OpenResponses JSON envelope |
-| [bots/_llm.py](bots/_llm.py) | Async Anthropic SDK wrapper |
-| [bots/researcher.py](bots/researcher.py) | Wikipedia / canned fetch + LLM bullets, port 8001 |
-| [bots/writer.py](bots/writer.py) | LLM draft + Python word-count control loop, port 8002 |
-| [bots/critic.py](bots/critic.py) | Programmatic checks + LLM JSON merged, port 8003 |
-| [data/sources.json](data/sources.json) | Canned topic→facts (offline fallback) |
-| [scripts/setup_openclaw.sh](scripts/setup_openclaw.sh) | One-shot OpenClaw config (needs verification on first run, see TODO) |
-| [scripts/run_all.sh](scripts/run_all.sh) | Background-launch bots + run orchestrator |
+## Small Modular Reactors: The Future of Nuclear Energy
+...
+
+=== CRITIQUE ===
+
+score:   8/10
+verdict: Well-structured and informative
+  - Could include more recent data
+  - ...
+```
+
+## Testing a Single Bot Directly
+
+You can bypass the gateway entirely to verify an individual bot:
+
+```bash
+conda activate experiments-env
+python -m bots.researcher &
+sleep 2
+
+source .env
+curl -s \
+  -H "Authorization: Bearer $ADAPTER_SECRET" \
+  -H "Content-Type: application/json" \
+  -d '{"input": "Research this topic: superconductors"}' \
+  http://127.0.0.1:8001/v1/responses | python -m json.tool
+```
+
+## Project Layout
+
+| Path | Description |
+|------|-------------|
+| [run.py](run.py) | Orchestrator — chains the three agents in sequence |
+| [bots/_adapter.py](bots/_adapter.py) | Shared FastAPI factory: Bearer auth, OpenResponses envelope, SSE streaming |
+| [bots/_llm.py](bots/_llm.py) | Async OpenAI client wrapper |
+| [bots/researcher.py](bots/researcher.py) | Wikipedia fetch + LLM bullet extraction, port 8001 |
+| [bots/writer.py](bots/writer.py) | LLM article drafting with word-count loop, port 8002 |
+| [bots/critic.py](bots/critic.py) | Programmatic checks + LLM JSON critique, port 8003 |
+| [data/sources.json](data/sources.json) | Offline fallback facts by topic |
+| [scripts/setup_openclaw.sh](scripts/setup_openclaw.sh) | One-time OpenClaw provider + agent registration |
+| [scripts/run_all.sh](scripts/run_all.sh) | Starts all bots and runs the orchestrator |
 
 ## Troubleshooting
 
-- **`invalid x-api-key`** when a bot calls Anthropic → wrong key. The
-  `ANTHROPIC_API_KEY` Claude Code injects is *not* a general API key; you
-  need a real one from the Anthropic console.
-- **`Non-interactive setup requires explicit risk acknowledgement`** →
-  add `--accept-risk` to the onboard command.
-- **401 from a bot** → `ADAPTER_SECRET` mismatch between `.env` and the
-  provider's `apiKey` in `~/.openclaw-dev/openclaw.json`.
-- **Connection refused on :8001/2/3** → bot didn't start; check
-  `.logs/<bot>.log`.
+| Symptom | Cause | Fix |
+|---------|-------|-----|
+| `401` from a bot | `ADAPTER_SECRET` in `.env` doesn't match OpenClaw config | Re-run `setup_openclaw.sh`, or manually sync the secret in `~/.openclaw-dev/openclaw.json` |
+| `ModuleNotFoundError: openclaw_sdk` | Wrong Python interpreter | Use `PYTHON=$(which python)` with the conda env activated |
+| `Connection refused on :8001/2/3` | Bot failed to start | Check `.logs/<bot>.log` |
+| `Invalid config … Unrecognized key: "timeout"` | Stale OpenClaw config keys | Remove `timeout` fields from providers in `~/.openclaw-dev/openclaw.json` |
+| Gateway reports "already running" | launchd is managing the process | This is normal — the existing gateway is healthy |
