@@ -33,7 +33,10 @@ def _extract_user_message(body: dict[str, Any]) -> str:
     if isinstance(data, list):
         for item in reversed(data):
             if item.get("role") == "user":
-                for part in item.get("content", []):
+                content = item.get("content", "")
+                if isinstance(content, str):
+                    return content
+                for part in content:
                     if part.get("type") in ("text", "input_text"):
                         return part.get("text", "")
     return ""

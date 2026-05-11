@@ -31,10 +31,9 @@ if ! command -v openclaw >/dev/null 2>&1; then
   exit 1
 fi
 
-declare -A PORTS=( [researcher]=8001 [writer]=8002 [critic]=8003 )
-
-for name in researcher writer critic; do
-  port="${PORTS[$name]}"
+for name_port in "researcher:8001" "writer:8002" "critic:8003"; do
+  name="${name_port%%:*}"
+  port="${name_port##*:}"
   provider_payload=$(cat <<JSON
 {
   "baseUrl": "http://127.0.0.1:${port}/v1",
