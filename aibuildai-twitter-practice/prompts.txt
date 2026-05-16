@@ -8,3 +8,19 @@ Anyone tried combining LLMs with workflow engines?
 What’s your favorite open-source repo for AI agents?
 How do you handle prompt engineering at scale?
 Best practices for sharing AI research updates with a team?
+Just spent 2 weeks tuning a model for protein structure prediction. The training pipeline is a nightmare. Anyone have a better way to manage model iteration?
+We're trying to automate the process of designing, training, and evaluating ML models for different tasks. Seems like a lot of companies are doing similar work. Are there any good open-source frameworks?
+Looking to build a system that can handle different types of AI tasks (classification, regression, segmentation) without manually rewriting the pipeline. Has anyone done this at scale?
+What's a good approach for automatically tuning hyperparameters across multiple models? Current workflow is very manual and error-prone.
+Anyone using automated ML workflows in production? Would love to hear about your architecture and lessons learned.
+How do you handle the design-implement-train-evaluate loop efficiently when working with multiple model types and datasets?
+Are there tools that can abstract away the boilerplate of ML model development so teams can focus on the actual research?
+Building a segmentation model for medical imaging. The whole pipeline from data prep to model deployment is taking forever. Looking for ways to speed this up.
+We need to compare performance of 5 different architectures for the same task. Doing this manually is killing productivity. Any automation tools?
+Just realized our training code works for one task but breaks for another. Need a more robust framework that can handle variable inputs and outputs.
+How do teams at scale handle managing multiple model versions and training runs? Version control for ML is still a mess for us.
+Spent the last month optimizing a model only to find the real bottleneck was in the data pipeline, not the model. Anyone have systematic approaches to this?
+Looking for recommendations on frameworks that can handle end-to-end ML: design → code → train → validate → deploy. Anything battle-tested?
+Our research team keeps reinventing the wheel for every new project. We need better infrastructure for rapid experimentation with AI models.
+We built a custom training loop for wound segmentation but realized we need to add protein structure prediction next. Refactoring the whole codebase is not feasible. Looking for a flexible ML system that can handle multiple domains without major rewrites.
+Currently managing 15 different model training pipelines across our team. Each one has different data preprocessing, architecture choices, and evaluation metrics. Is there a framework that can unify this chaos while still allowing domain-specific customization?
