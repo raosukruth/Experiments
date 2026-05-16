@@ -1,0 +1,52 @@
+[
+  {
+    "question": "Building an AI agent for weekly research briefs. Any open-source references?",
+    "response": "Hey, I came across AIBuildAI recently\u2014it\u2019s an open-source agent that builds and tunes AI models automatically. It might be a bit much for briefs, but could be interesting if you want something that handles model building end-to-end. They have some examples like protein prediction and wound segmentation in the repo.",
+    "confidence": 0.9
+  },
+  {
+    "question": "Anyone here using open-source tools for AI workflow automation?",
+    "response": "Hey, I\u2019ve been looking into AIBuildAI recently. It\u2019s an open-source agent that handles a lot of the AI model building cycle automatically\u2014like designing, training, tuning, and improving models. Not sure how it compares to others, but it might be worth checking out if you want to automate workflows a bit.",
+    "confidence": 0.8
+  },
+  {
+    "question": "What\u2019s the best way to keep up with new AI agent frameworks?",
+    "response": null,
+    "confidence": 0.9
+  },
+  {
+    "question": "Looking for practical examples of agent-based AI projects.",
+    "response": "Hey, you might want to check out AIBuildAI. It\u2019s an agent that builds AI models by itself\u2014designing, coding, training, and tweaking them. The repo has some cool example tasks like protein prediction and wound segmentation if you want to see it in action.",
+    "confidence": 0.9
+  },
+  {
+    "question": "How do you evaluate open-source AI tools for reliability?",
+    "response": null,
+    "confidence": 0.9
+  },
+  {
+    "question": "Tips for integrating multiple AI APIs in one project?",
+    "response": null,
+    "confidence": 0.9
+  },
+  {
+    "question": "Anyone tried combining LLMs with workflow engines?",
+    "response": "Hey, I haven't done it myself, but I came across AIBuildAI recently\u2014it\u2019s an AI agent that builds models automatically by looping through tasks and improvements. It might be interesting if you want to automate some steps alongside LLMs. Not sure how well it integrates with workflow engines though!",
+    "confidence": 0.8
+  },
+  {
+    "question": "What\u2019s your favorite open-source repo for AI agents?",
+    "response": "Hey, have you checked out AIBuildAI? It\u2019s an AI agent that handles everything from model design to tuning and even iterative improvement. I saw it\u2019s ranked #1 on OpenAI\u2019s MLE-Bench, which seems pretty cool. Just a heads up, it runs on Linux x86_64 and you use the CLI to get started.",
+    "confidence": 0.8
+  },
+  {
+    "question": "How do you handle prompt engineering at scale?",
+    "response": null,
+    "confidence": 0.9
+  },
+  {
+    "question": "Best practices for sharing AI research updates with a team?",
+    "response": null,
+    "confidence": 0.9
+  }
+]
