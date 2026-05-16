@@ -1,0 +1,12 @@
+{
+  "project_name": "AIBuildAI",
+  "short_description": "An AI agent that automatically builds AI models.",
+  "approved_facts": [
+    "It runs an agent loop that analyzes a task, designs models, writes code, trains them, tunes hyperparameters, evaluates performance, and iteratively improves models.",
+    "The repository README says AIBuildAI is #1 on OpenAI MLE-Bench.",
+    "The quick start documents a Linux x86_64 installation path and use of the aibuildai CLI.",
+    "The project accepts task instructions and data directories, and includes task markdowns under tasks/.",
+    "Example tasks in the repo include protein-ec-prediction, TGS Salt Identification Challenge, wound segmentation, and Spaceship Titanic.",
+    "The README shows Anthropic API key setup in the quick start instructions."
+  ]
+}

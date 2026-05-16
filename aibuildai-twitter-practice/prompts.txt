@@ -1,0 +1,10 @@
+Building an AI agent for weekly research briefs. Any open-source references?
+Anyone here using open-source tools for AI workflow automation?
+What’s the best way to keep up with new AI agent frameworks?
+Looking for practical examples of agent-based AI projects.
+How do you evaluate open-source AI tools for reliability?
+Tips for integrating multiple AI APIs in one project?
+Anyone tried combining LLMs with workflow engines?
+What’s your favorite open-source repo for AI agents?
+How do you handle prompt engineering at scale?
+Best practices for sharing AI research updates with a team?
