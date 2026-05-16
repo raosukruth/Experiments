@@ -1,12 +1,12 @@
 [
   {
     "question": "Building an AI agent for weekly research briefs. Any open-source references?",
-    "response": "Hey, I came across AIBuildAI recently\u2014it\u2019s an open-source agent that builds and tunes AI models automatically. It might be a bit much for briefs, but could be interesting if you want something that handles model building end-to-end. They have some examples like protein prediction and wound segmentation in the repo.",
-    "confidence": 0.9
+    "response": "Hey, you might want to check out AIBuildAI\u2014it\u2019s an open-source agent that builds AI models automatically. It handles everything from designing to tuning models. Could be handy for automating research briefs, though it\u2019s mostly set up for Linux x86_64 with a CLI. Just a thought!",
+    "confidence": 0.8
   },
   {
     "question": "Anyone here using open-source tools for AI workflow automation?",
-    "response": "Hey, I\u2019ve been looking into AIBuildAI recently. It\u2019s an open-source agent that handles a lot of the AI model building cycle automatically\u2014like designing, training, tuning, and improving models. Not sure how it compares to others, but it might be worth checking out if you want to automate workflows a bit.",
+    "response": "Hey, have you checked out AIBuildAI? It\u2019s an open-source agent that handles a lot of AI workflow steps like designing models and tuning hyperparameters. I think it\u2019s #1 on OpenAI MLE-Bench, but it\u2019s mainly set up for Linux. Might be worth a look if you want something pretty hands-off!",
     "confidence": 0.8
   },
   {
@@ -16,13 +16,13 @@
   },
   {
     "question": "Looking for practical examples of agent-based AI projects.",
-    "response": "Hey, you might want to check out AIBuildAI. It\u2019s an agent that builds AI models by itself\u2014designing, coding, training, and tweaking them. The repo has some cool example tasks like protein prediction and wound segmentation if you want to see it in action.",
-    "confidence": 0.9
+    "response": null,
+    "confidence": 0.8
   },
   {
     "question": "How do you evaluate open-source AI tools for reliability?",
     "response": null,
-    "confidence": 0.9
+    "confidence": 0.8
   },
   {
     "question": "Tips for integrating multiple AI APIs in one project?",
@@ -31,13 +31,13 @@
   },
   {
     "question": "Anyone tried combining LLMs with workflow engines?",
-    "response": "Hey, I haven't done it myself, but I came across AIBuildAI recently\u2014it\u2019s an AI agent that builds models automatically by looping through tasks and improvements. It might be interesting if you want to automate some steps alongside LLMs. Not sure how well it integrates with workflow engines though!",
+    "response": "Hey, some folks have been exploring that\u2014there's this project called AIBuildAI that uses an agent loop to build and improve AI models automatically. It might be worth checking out how it organizes tasks and workflows, especially if you're working on complex pipelines.",
     "confidence": 0.8
   },
   {
     "question": "What\u2019s your favorite open-source repo for AI agents?",
-    "response": "Hey, have you checked out AIBuildAI? It\u2019s an AI agent that handles everything from model design to tuning and even iterative improvement. I saw it\u2019s ranked #1 on OpenAI\u2019s MLE-Bench, which seems pretty cool. Just a heads up, it runs on Linux x86_64 and you use the CLI to get started.",
-    "confidence": 0.8
+    "response": null,
+    "confidence": 0.9
   },
   {
     "question": "How do you handle prompt engineering at scale?",
@@ -47,6 +47,86 @@
   {
     "question": "Best practices for sharing AI research updates with a team?",
     "response": null,
+    "confidence": 0.9
+  },
+  {
+    "question": "Just spent 2 weeks tuning a model for protein structure prediction. The training pipeline is a nightmare. Anyone have a better way to manage model iteration?",
+    "response": "Hey, that sounds really tough. You might want to check out AIBuildAI\u2014it's an agent that automates building and tuning models by iterating through design, training, and evaluation. I\u2019ve heard it\u2019s pretty helpful for complex tasks like protein prediction, though I haven\u2019t tried it myself yet.",
+    "confidence": 0.8
+  },
+  {
+    "question": "We're trying to automate the process of designing, training, and evaluating ML models for different tasks. Seems like a lot of companies are doing similar work. Are there any good open-source frameworks?",
+    "response": "Hey, you might want to check out AIBuildAI. It\u2019s an open-source agent that loops through designing, coding, training, and tuning ML models automatically. It even ranks #1 on OpenAI\u2019s MLE-Bench. Could be a helpful starting point if you\u2019re exploring automation in model building.",
+    "confidence": 0.9
+  },
+  {
+    "question": "Looking to build a system that can handle different types of AI tasks (classification, regression, segmentation) without manually rewriting the pipeline. Has anyone done this at scale?",
+    "response": "Hey, I\u2019ve heard about AIBuildAI\u2014it\u2019s an agent that automates building AI models across various tasks by analyzing, coding, training, and tuning iteratively. Might be worth checking out since it supports classification, regression, and segmentation tasks. Not sure how well it scales though, but the repo has some cool examples to explore.",
+    "confidence": 0.9
+  },
+  {
+    "question": "What's a good approach for automatically tuning hyperparameters across multiple models? Current workflow is very manual and error-prone.",
+    "response": "Hey, have you looked into tools like AIBuildAI? It runs an agent that not only designs models but also tunes hyperparameters iteratively, which might help reduce the manual hassle you're facing.",
+    "confidence": 0.9
+  },
+  {
+    "question": "Anyone using automated ML workflows in production? Would love to hear about your architecture and lessons learned.",
+    "response": "Hey, I haven't deployed fully automated ML in production myself, but I came across AIBuildAI\u2014it handles everything from designing to tuning models and might be worth a look if you're exploring agent-driven workflows. Heard it's top on the OpenAI MLE-Bench too, which sounds promising.",
+    "confidence": 0.8
+  },
+  {
+    "question": "How do you handle the design-implement-train-evaluate loop efficiently when working with multiple model types and datasets?",
+    "response": "Hey, I\u2019ve been looking at AIBuildAI lately\u2014it runs an agent loop that kind of automates that whole design-implement-train-evaluate cycle across different models and datasets. Maybe checking out its approach or the example tasks in the repo could give some ideas on managing the workflow more smoothly?",
+    "confidence": 0.9
+  },
+  {
+    "question": "Are there tools that can abstract away the boilerplate of ML model development so teams can focus on the actual research?",
+    "response": "Hey, you might want to check out AIBuildAI. It seems to handle a lot of the repetitive steps like designing models, training, and tuning. Not sure if it fits every workflow, but it could ease some of that boilerplate work.",
+    "confidence": 0.9
+  },
+  {
+    "question": "Building a segmentation model for medical imaging. The whole pipeline from data prep to model deployment is taking forever. Looking for ways to speed this up.",
+    "response": "Hey, that sounds like a lot to handle! Have you checked out AIBuildAI? It\u2019s an agent that automates building AI models, including training and tuning. Might be worth a look to speed things up, especially since it has some medical-related tasks like wound segmentation.",
+    "confidence": 0.8
+  },
+  {
+    "question": "We need to compare performance of 5 different architectures for the same task. Doing this manually is killing productivity. Any automation tools?",
+    "response": "Hey, that sounds frustrating. You might check out AIBuildAI\u2014it\u2019s designed to automatically build and improve AI models, including trying different designs and tuning them. It even has some example tasks and a CLI tool for Linux if you\u2019re on that platform. Could be worth a look to save some manual work.",
+    "confidence": 0.9
+  },
+  {
+    "question": "Just realized our training code works for one task but breaks for another. Need a more robust framework that can handle variable inputs and outputs.",
+    "response": "Hey, that sounds tricky! Have you seen AIBuildAI? It tries to handle different tasks by analyzing and iteratively improving models, which might help with variable inputs and outputs. It's a bit Linux-focused, but the agent loop approach could be useful.",
+    "confidence": 0.8
+  },
+  {
+    "question": "How do teams at scale handle managing multiple model versions and training runs? Version control for ML is still a mess for us.",
+    "response": null,
+    "confidence": 0.9
+  },
+  {
+    "question": "Spent the last month optimizing a model only to find the real bottleneck was in the data pipeline, not the model. Anyone have systematic approaches to this?",
+    "response": null,
+    "confidence": 0.9
+  },
+  {
+    "question": "Looking for recommendations on frameworks that can handle end-to-end ML: design \u2192 code \u2192 train \u2192 validate \u2192 deploy. Anything battle-tested?",
+    "response": "Hey, you might want to check out AIBuildAI. It seems to handle everything from designing models to training and tuning them automatically. I saw it\u2019s ranked #1 on OpenAI MLE-Bench, which sounds promising. It\u2019s Linux-focused, and you interact with it via CLI. Not sure how it handles deployment exactly, but it could be worth a look!",
+    "confidence": 0.9
+  },
+  {
+    "question": "Our research team keeps reinventing the wheel for every new project. We need better infrastructure for rapid experimentation with AI models.",
+    "response": null,
+    "confidence": 0.8
+  },
+  {
+    "question": "We built a custom training loop for wound segmentation but realized we need to add protein structure prediction next. Refactoring the whole codebase is not feasible. Looking for a flexible ML system that can handle multiple domains without major rewrites.",
+    "response": "Hey, that sounds tricky! You might want to check out AIBuildAI\u2014it\u2019s designed to handle different tasks by analyzing and iteratively improving models, and it includes wound segmentation and protein prediction tasks. Not sure if it fits perfectly, but maybe worth a look to avoid heavy refactoring?",
+    "confidence": 0.9
+  },
+  {
+    "question": "Currently managing 15 different model training pipelines across our team. Each one has different data preprocessing, architecture choices, and evaluation metrics. Is there a framework that can unify this chaos while still allowing domain-specific customization?",
+    "response": "Hey, that sounds pretty complex! Have you looked into AIBuildAI? It runs an agent loop that handles everything from designing models to tuning hyperparameters and evaluation. Might help unify your pipelines while letting you customize per task. Just a thought!",
     "confidence": 0.9
   }
 ]
