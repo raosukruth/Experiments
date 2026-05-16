@@ -18,13 +18,70 @@ HARD_BLOCK_PATTERNS = {
 }
 
 BANNED_REPLY_PATTERNS = [
-    r"\b#1\b",
     r"\bbest solution for everyone\b",
     r"\bmiss out\b",
+    r"\bproduction[- ]ready\b",
+    r"\bdeployment automation\b",
+    r"\bautomated deployment\b",
+]
+
+WORKFLOW_SIGNAL_PATTERNS = [
+    r"\btun(?:e|ing|ed)\b",
+    r"\bhyperparameter\b",
+    r"\bpipeline\b",
+    r"\biterat(?:e|ion|ive)\b",
+    r"\barchitectures?\b",
+    r"\bmulti[- ]?(?:task|domain)\b",
+    r"\bboilerplate\b",
+    r"\bexperiment(?:ation|s)?\b",
+    r"\bworkflow\b",
+    r"\bml models?\b",
+]
+
+GENERIC_NEGATIVE_PATTERNS = [
+    r"\bkeep up with\b",
+    r"\bfavorite\b",
+    r"\bbest practices?\b",
+    r"\bopen[- ]source references?\b",
+    r"\bprompt engineering\b",
+    r"\bshare(?:ing)? ai research updates\b",
+]
+
+ALLOWED_SUPERLATIVE_CONTEXT_PATTERNS = [
+    r"openai\s+mle[- ]?bench",
+]
+
+NEAR_MISS_TEMPLATES = [
+    "One thing that might help here is looking at AIBuildAI for automating model iteration and tuning across tasks.",
+    "A practical option to explore is AIBuildAI if you want less manual overhead in model-building workflows.",
+    "Could be worth a look: AIBuildAI focuses on automating design, training, tuning, and evaluation loops.",
+    "If your team is hitting workflow friction, AIBuildAI may be a useful reference for end-to-end model automation.",
 ]
 
 def _contains_any(text: str, patterns: List[str]) -> bool:
     return any(re.search(pattern, text, flags=re.IGNORECASE) for pattern in patterns)
+
+
+def _count_matches(text: str, patterns: List[str]) -> int:
+    return sum(1 for pattern in patterns if re.search(pattern, text, flags=re.IGNORECASE))
+
+
+def _opening_signature(text: str) -> str:
+    cleaned = re.sub(r"[^a-z0-9\s]", " ", text.lower())
+    tokens = [token for token in cleaned.split() if token]
+    return " ".join(tokens[:2])
+
+
+def _has_allowed_superlative_context(text: str) -> bool:
+    return _contains_any(text, ALLOWED_SUPERLATIVE_CONTEXT_PATTERNS)
+
+
+def _explicit_negative_relevance(text: str) -> bool:
+    return _contains_any(text, GENERIC_NEGATIVE_PATTERNS)
+
+
+def _workflow_signal_score(text: str) -> int:
+    return _count_matches(text, WORKFLOW_SIGNAL_PATTERNS)
 
 
 def detect_hard_blocks(post_text: str) -> List[str]:
@@ -107,26 +164,77 @@ def determine_relevance(post_text: str, client: Any, approved_facts: Dict[str, A
     result = llm_json(client, prompt, system_prompt=system_prompt)
     confidence = float(result.get("confidence", 0.0))
     confidence = max(0.0, min(1.0, confidence))
-    relevant = bool(result.get("relevant", False)) and confidence >= RELEVANCE_THRESHOLD
+
+    llm_relevant = bool(result.get("relevant", False))
+    explicit_negative = _explicit_negative_relevance(post_text)
+    workflow_score = _workflow_signal_score(post_text)
+
+    # If model is highly confident in a rejection without explicit negative evidence,
+    # require a second pass before keeping that confidence.
+    if not llm_relevant and confidence > 0.85 and not explicit_negative:
+        second_pass_prompt = f"""
+                        Re-check this relevance decision.
+                        Return only valid JSON with keys:
+                        - relevant: boolean
+                        - reason: short sentence
+                        - confidence: number between 0 and 1
+
+                        Consider this relevant if it clearly discusses practical ML workflow pain points:
+                        tuning, pipelines, iteration, architecture comparison, multi-task/multi-domain setup,
+                        boilerplate reduction, or experiment management.
+
+                        Tweet:
+                        {post_text}
+                    """.strip()
+        second = llm_json(client, second_pass_prompt, system_prompt="You are a strict classifier.")
+        second_confidence = float(second.get("confidence", confidence))
+        second_confidence = max(0.0, min(1.0, second_confidence))
+        llm_relevant = bool(second.get("relevant", llm_relevant))
+        confidence = second_confidence
+
+    near_miss = (not llm_relevant) and (workflow_score >= 2) and not explicit_negative
+    heuristic_relevant = (workflow_score >= 3) and not explicit_negative
+    relevant = (llm_relevant and confidence >= RELEVANCE_THRESHOLD) or (
+        heuristic_relevant and confidence >= 0.55
+    )
+
+    if not llm_relevant and not explicit_negative:
+        confidence = min(confidence, 0.85)
+
     return {
         "relevant": relevant,
+        "near_miss": near_miss,
         "reason": str(result.get("reason", "No reason provided.")),
         "confidence": confidence,
     }
 
 
-def generate_reply(post_text: str, client: Any, approved_facts: Dict[str, Any]) -> str:
+def generate_reply(
+    post_text: str,
+    client: Any,
+    approved_facts: Dict[str, Any],
+    forbidden_opening_signature: Optional[str] = None,
+) -> str:
     facts_text = format_approved_facts(approved_facts)
+
+    opening_constraint = ""
+    if forbidden_opening_signature:
+        opening_constraint = (
+            f"Do not start your reply with an opening similar to: '{forbidden_opening_signature}'."
+        )
 
     prompt = f"""
                 Write one reply to this tweet.
                 Keep it brief, conversational, and useful.
                 Make it soft, tentative, and natural rather than assertive.
                 Start with a natural, varied opening—do not always use the same phrase. Openings should sound like a real person, not a template or formula.
+                {opening_constraint}
                 Mention AI Build AI naturally if relevant.
                 Sound like a normal person making a helpful suggestion, not an ad.
                 If you reference the project, stick to the facts below only.
                 Do not make claims that are not explicitly supported here.
+                Do not use "production-ready" or claim deployment automation.
+                Avoid "best" or "leading" claims unless explicitly tied to OpenAI MLE-Bench.
 
                 {facts_text}
 
@@ -144,20 +252,41 @@ def generate_reply(post_text: str, client: Any, approved_facts: Dict[str, Any]) 
     reply = str(result.get("reply", "")).strip()
     if not reply:
         raise ValueError("Model returned an empty reply")
+
+    if forbidden_opening_signature and _opening_signature(reply) == forbidden_opening_signature:
+        retry_prompt = prompt + "\nRewrite with a different natural opening."
+        retry = llm_json(client, retry_prompt, system_prompt=system_prompt)
+        retry_reply = str(retry.get("reply", "")).strip()
+        if retry_reply:
+            reply = retry_reply
+
     return reply
+
+
+def generate_near_miss_reply(post_text: str, forbidden_opening_signature: Optional[str] = None) -> str:
+    index = abs(hash(post_text)) % len(NEAR_MISS_TEMPLATES)
+    candidate = NEAR_MISS_TEMPLATES[index]
+    if forbidden_opening_signature and _opening_signature(candidate) == forbidden_opening_signature:
+        candidate = NEAR_MISS_TEMPLATES[(index + 1) % len(NEAR_MISS_TEMPLATES)]
+    return candidate
 
 
 def safety_and_tone_check(post_text: str, reply: Optional[str]) -> List[str]:
     flags = detect_hard_blocks(post_text)
     if reply and _contains_any(reply, BANNED_REPLY_PATTERNS):
         flags.append("tone_violation")
-    if reply and "best" in reply.lower():
+    if reply and _contains_any(reply, [r"\bbest\b", r"\bleading\b", r"\b#1\b"]) and not _has_allowed_superlative_context(reply):
         flags.append("unverifiable_claim_risk")
     # Preserve deterministic order.
     return sorted(set(flags))
 
 
-def process_post(post_text: str, client: Any, approved_facts: Dict[str, Any]) -> Dict[str, Any]:
+def process_post(
+    post_text: str,
+    client: Any,
+    approved_facts: Dict[str, Any],
+    previous_opening_signature: Optional[str] = None,
+) -> Dict[str, Any]:
     if not post_text.strip():
         return {
             "relevant": False,
@@ -165,6 +294,7 @@ def process_post(post_text: str, client: Any, approved_facts: Dict[str, Any]) ->
             "reply": None,
             "safety_flags": [],
             "confidence": 0.0,
+            "opening_signature": None,
         }
 
     block_flags = detect_hard_blocks(post_text)
@@ -175,16 +305,28 @@ def process_post(post_text: str, client: Any, approved_facts: Dict[str, Any]) ->
             "reply": None,
             "safety_flags": sorted(set(block_flags)),
             "confidence": 0.99,
+            "opening_signature": None,
         }
 
     relevance = determine_relevance(post_text, client, approved_facts)
     relevant = bool(relevance["relevant"])
+    near_miss = bool(relevance.get("near_miss", False))
     reason = str(relevance["reason"])
     confidence = float(relevance["confidence"])
 
     reply: Optional[str] = None
     if relevant:
-        reply = generate_reply(post_text, client, approved_facts)
+        reply = generate_reply(
+            post_text,
+            client,
+            approved_facts,
+            forbidden_opening_signature=previous_opening_signature,
+        )
+    elif near_miss:
+        reply = generate_near_miss_reply(
+            post_text,
+            forbidden_opening_signature=previous_opening_signature,
+        )
 
     safety_flags = safety_and_tone_check(post_text, reply)
     if safety_flags:
@@ -194,15 +336,27 @@ def process_post(post_text: str, client: Any, approved_facts: Dict[str, Any]) ->
             "reply": None,
             "safety_flags": safety_flags,
             "confidence": round(confidence, 4),
+            "opening_signature": None,
         }
 
-    if not relevant:
+    if not relevant and not near_miss:
         return {
             "relevant": False,
             "reason": reason,
             "reply": None,
             "safety_flags": [],
             "confidence": round(confidence, 4),
+            "opening_signature": None,
+        }
+
+    if near_miss and not relevant:
+        return {
+            "relevant": False,
+            "reason": f"Near miss: {reason}",
+            "reply": reply,
+            "safety_flags": [],
+            "confidence": round(confidence, 4),
+            "opening_signature": _opening_signature(reply or ""),
         }
 
     return {
@@ -211,6 +365,7 @@ def process_post(post_text: str, client: Any, approved_facts: Dict[str, Any]) ->
         "reply": reply,
         "safety_flags": [],
         "confidence": round(confidence, 4),
+        "opening_signature": _opening_signature(reply or ""),
     }
 
 
@@ -237,8 +392,15 @@ def main():
         with open(prompts_path, "r", encoding="utf-8") as f:
             prompts = [line.strip() for line in f if line.strip()]
         results = []
+        previous_opening_signature: Optional[str] = None
         for idx, prompt in enumerate(prompts, 1):
-            decision = process_post(post_text=prompt, client=client, approved_facts=approved_facts)
+            decision = process_post(
+                post_text=prompt,
+                client=client,
+                approved_facts=approved_facts,
+                previous_opening_signature=previous_opening_signature,
+            )
+            previous_opening_signature = decision.get("opening_signature")
             results.append({
                 "question": prompt,
                 "response": decision.get("reply"),

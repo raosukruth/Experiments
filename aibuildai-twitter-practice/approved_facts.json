@@ -1,12 +1,20 @@
 {
   "project_name": "AIBuildAI",
-  "short_description": "An AI agent that automatically builds AI models.",
+  "short_description": "An AI agent that automatically builds AI models from task descriptions and data, ranked #1 on OpenAI MLE-Bench. It automates the entire machine learning workflow: task analysis, model design, code generation, training, hyperparameter tuning, evaluation, and iterative improvement.",
   "approved_facts": [
-    "It runs an agent loop that analyzes a task, designs models, writes code, trains them, tunes hyperparameters, evaluates performance, and iteratively improves models.",
-    "The repository README says AIBuildAI is #1 on OpenAI MLE-Bench.",
-    "The quick start documents a Linux x86_64 installation path and use of the aibuildai CLI.",
-    "The project accepts task instructions and data directories, and includes task markdowns under tasks/.",
-    "Example tasks in the repo include protein-ec-prediction, TGS Salt Identification Challenge, wound segmentation, and Spaceship Titanic.",
-    "The README shows Anthropic API key setup in the quick start instructions."
+    "AIBuildAI Agent 2.0 achieved #1 on OpenAI's MLE-Bench with a score of 70.7%, substantially outperforming agents ranked 2nd through 5th.",
+    "The agent automatically builds AI models by running an iterative loop: analyzes the task, designs neural network architectures, generates implementation code, trains models, tunes hyperparameters, evaluates performance, and iteratively improves results.",
+    "On the TGS Salt Identification Challenge (Kaggle), models automatically developed by AIBuildAI ranked in the top 5.7% among 3,219 expert teams, demonstrating top-tier human expert-level performance.",
+    "On the Heart Disease Prediction competition (Kaggle), AIBuildAI-developed models ranked in the top 6.6% among 4,370 expert teams.",
+    "AIBuildAI requires a Linux x86_64 machine and uses the Anthropic Claude API (specifically tested with claude-opus-4-6 in examples). Users set credentials via the ANTHROPIC_API_KEY environment variable.",
+    "The agent accepts two key inputs: a task description (natural-language markdown file) and a data directory containing training/validation/test data. It outputs trained model checkpoints, a standalone inference.py script, and a progress.pdf report.",
+    "Supported problem types include: multi-class classification (e.g., enzyme EC number prediction with 7 classes), binary classification (e.g., passenger transport prediction), image segmentation (e.g., wound segmentation for medical imaging, salt identification), and tabular data analysis.",
+    "Example tasks in the repository include: protein-ec-prediction (enzyme classification), wound-segmentation (binary medical image segmentation using deep CNNs), spaceship-titanic (tabular classification), tgs-salt-identification-challenge (seismic image segmentation), playground-series-s6e2 (heart disease prediction), aerial-cactus-identification (image classification), and learning-agency-lab-automated-essay-scoring-2 (NLP task).",
+    "AIBuildAI evaluates performance using task-specific metrics: F1-score (macro) for multi-class protein classification, Dice coefficient for medical image segmentation, classification accuracy for tabular prediction tasks.",
+    "The system generates multiple model candidates during each run (configurable via --num-candidates), automatically selects the best performer, and outputs a standalone inference.py script that can run predictions on new data without the agent.",
+    "Command-line interface supports parameters like --max-agent-calls (limit iterations), --run-budget-minutes (wall-clock time budget), --pipeline-budget-minutes (total budget), --model (LLM choice), and interactive TUI mode via the aibuildai command.",
+    "Version 1.0 and 2.0 both ranked #1 on MLE-Bench; version 2.0 introduced substantial technical advancements over version 1.0 and is available to Pro users.",
+    "Published research paper: arXiv 2604.14455, 'AIBuildAI: An AI Agent for Automatically Building AI Models' by Ruiyi Zhang, Peijia Qin, Qi Cao, Li Zhang, and Pengtao Xie.",
+    "The project is MIT-licensed and available on GitHub at github.com/aibuildai/AI-Build-AI. It includes seven pre-configured task examples with real-world datasets and detailed evaluation scripts."
   ]
 }
