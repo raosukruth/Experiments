@@ -1,0 +1,40 @@
+from __future__ import annotations
+
+import re
+from typing import List, Optional
+
+HARD_BLOCK_PATTERNS = {
+    "harassment_context": [r"\bkill yourself\b", r"\bhate\b", r"\bslur\b"],
+    "self_harm_context": [r"\bself harm\b", r"\bsuicide\b"],
+    "illegal_activity_context": [r"\bhow to hack\b", r"\bfraud\b", r"\bdrug recipe\b"],
+}
+
+BANNED_REPLY_PATTERNS = [
+    r"\b#1\b",
+    r"\bbest solution for everyone\b",
+    r"\bmiss out\b",
+]
+
+
+def _contains_any(text: str, patterns: List[str]) -> bool:
+    return any(re.search(pattern, text, flags=re.IGNORECASE) for pattern in patterns)
+
+
+def detect_hard_blocks(post_text: str) -> List[str]:
+    flags: List[str] = []
+    for label, patterns in HARD_BLOCK_PATTERNS.items():
+        if _contains_any(post_text, patterns):
+            flags.append(label)
+    return flags
+
+
+def safety_and_tone_check(post_text: str, reply: Optional[str]) -> List[str]:
+    flags = detect_hard_blocks(post_text)
+    if reply and _contains_any(reply, BANNED_REPLY_PATTERNS):
+        flags.append("tone_violation")
+    if reply and "best" in reply.lower():
+        flags.append("unverifiable_claim_risk")
+    return sorted(set(flags))
+
+
+safety_flags = detect_hard_blocks
