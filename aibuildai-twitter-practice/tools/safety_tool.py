@@ -32,7 +32,7 @@ def safety_and_tone_check(post_text: str, reply: Optional[str]) -> List[str]:
     flags = detect_hard_blocks(post_text)
     if reply and _contains_any(reply, BANNED_REPLY_PATTERNS):
         flags.append("tone_violation")
-    if reply and "best" in reply.lower():
+    if reply and _contains_any(reply, [r"\bthe best\b", r"\b#1\b", r"\bbest tool\b", r"\bbest platform\b", r"\bbest solution\b"]):
         flags.append("unverifiable_claim_risk")
     return sorted(set(flags))
 

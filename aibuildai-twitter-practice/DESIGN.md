@@ -134,7 +134,7 @@ If any block triggers: `relevant=false`, `reply=null`
 | `self_harm_context` | self-harm, suicide references |
 | `illegal_activity_context` | hacking instructions, fraud, drug recipes |
 | `tone_violation` | banned reply phrases |
-| `unverifiable_claim_risk` | "best" or superlative claims in reply |
+| `unverifiable_claim_risk` | superlative marketing claims in reply ("the best", "best tool", "best platform", "best solution", "#1") |
 
 ## Twitter Ingestion
 
