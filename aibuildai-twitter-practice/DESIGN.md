@@ -1,124 +1,73 @@
-
-# AI Build AI Twitter Reply System Design (Implementation Overview)
+# AIBuildAI Twitter Reply System — Design
 
 ## What This System Does
 
-For each Twitter/X-style post, the system decides if a reply mentioning AI Build AI would be genuinely helpful and safe. It:
+For each tweet, the system decides if a reply mentioning AIBuildAI would be genuinely helpful and safe. It:
 
-- Classifies the post for relevance to AI Build AI (using OpenAI LLM, grounded in approved facts).
-- If relevant, generates one short, natural, non-promotional reply (also using the LLM, with varied openings and strict fact grounding).
-- Applies safety and tone checks (hard blocks, banned phrases, unverifiable claims).
-- Returns a structured result with a confidence score.
+1. Fetches real tweets from Twitter/X via the API
+2. Classifies each tweet for relevance (LLM, grounded in approved facts, threshold 0.65)
+3. If relevant, generates one short natural non-promotional reply
+4. Applies safety and tone checks (hard blocks, banned phrases, unverifiable claims)
+5. Returns a structured result with confidence score
+6. Writes all results to `output.json`
 
-## How to Run
+## Code Structure
 
-- **Single prompt:**
-  - `python3 main.py "your tweet text here"`
-  - Or: `echo "your tweet text here" | python3 main.py`
-- **Batch mode:**
-  - Add prompts (one per line) to `prompts.txt`.
-  - Run: `python3 main.py --test`
-  - Results are written to `output.json` (overwritten each run) and printed to the terminal.
+Logic lives in `tools/` — `main.py` is a thin CLI entrypoint only.
 
-## Input/Output Schema
-
-### Input
-
-Single prompt: string (tweet text)
-
-Batch mode: lines from `prompts.txt`
-
-### Output (single prompt)
-
-```json
-{
-  "relevant": true,
-  "reason": "Post asks for practical AI workflow resources.",
-  "reply": "Hey, you might want to check out AIBuildAI—it's an open-source agent...",
-  "safety_flags": [],
-  "confidence": 0.87
-}
 ```
-
-### Output (batch mode)
-
-```json
-[
-  {
-    "question": "...",
-    "response": "...",
-    "confidence": 0.87
-  },
-  ...
-]
+main.py                  ← CLI: single tweet or --test batch
+twitter_ingest.py        ← Twitter API ingestion (tweepy)
+tools/
+  client_tool.py         ← OpenAI client, key loading, approved facts, llm_json()
+  relevance_tool.py      ← Full relevance prompt + LLM call + threshold
+  safety_tool.py         ← Hard-block patterns + tone checks
+  reply_tool.py          ← Full reply prompt + LLM call
+  pipeline_tool.py       ← process_tweet() + process_batch() orchestration
+  ingest_tool.py         ← Wrapper around twitter_ingest.run_ingest()
+approved_facts.json      ← Ground truth facts the LLM may reference
+SKILL.md                 ← OpenClaw skill definition
 ```
 
 ## Decision Flow
 
-1. **Hard block check:** If post triggers a hard block (harassment, self-harm, illegal, etc.), immediately return no reply.
-2. **Relevance classification:** LLM classifies post as relevant or not, with a confidence score (>= 0.65 required for relevance).
-3. **Reply generation:** If relevant, LLM generates a reply, strictly grounded in approved facts, with a natural, varied opening.
-4. **Safety/tone check:** Reply is checked for banned phrases, unverifiable claims, and other tone/safety issues. If flagged, reply is suppressed.
-5. **Output:** Returns structured result (see above).
-
-## Safety & Tone Rules
-
-- Hard blocks: harassment, self-harm, illegal activity, etc. (see code for regexes)
-- Banned reply patterns: hype, superlatives, sales language, unverifiable claims
-- Only facts from `approved_facts.json` may be referenced
-- Reply must be natural, not repetitive or templated
-
-## Implementation Details
-
-- Uses OpenAI API (model: gpt-4.1-mini by default)
-- Loads API key from `openai-api.txt`
-- Loads approved facts from `approved_facts.json`
-- CLI supports both single and batch modes
-- Batch mode prints progress ("Question N finished.")
-- Output is always JSON (single or list)
-- Temperature is set high (0.8) for varied replies
-
-## Failure Modes & Mitigations
-
-- False positives: Raise threshold, add non-relevant examples
-- False negatives: Expand relevant examples, review low-confidence misses
-- Ad-like tone: Enforce banned phrases, rewrite for neutrality
-- Hallucinated claims: Restrict to approved facts
-- Repetitive replies: Prompt for varied/natural openings
-- Unsafe context: Hard-block checks before output
+```
+tweet text
+  │
+  ▼
+detect_hard_blocks()      ← immediate block if triggered
+  │ (clear)
+  ▼
+classify_relevance()      ← LLM classifier, confidence >= 0.65 required
+  │ (relevant)
+  ▼
+generate_tweet_reply()    ← LLM reply, grounded in approved_facts.json
+  │
+  ▼
+safety_and_tone_check()   ← banned phrases, unverifiable claim check
+  │ (clean)
+  ▼
+output result
+```
 
 ## Input/Output Schema
 
-### Input
+### Single tweet (CLI)
 
-```json
-{
-  "post_text": "string"
-}
-```
+Input: string (tweet text)
 
-### Output
-
+Output:
 ```json
 {
   "relevant": true,
   "reason": "Post asks for practical AI workflow resources.",
-  "reply": "If you're looking for practical build examples, AI Build AI might be a useful reference.",
+  "reply": "Might be worth checking out AIBuildAI...",
   "safety_flags": [],
   "confidence": 0.87
 }
 ```
 
-Rules:
-
-- `relevant`: boolean.
-- `reason`: one-sentence explanation.
-- `reply`: string or `null` (must be `null` when not relevant).
-- `safety_flags`: list of safety labels.
-- `confidence`: float in [0.0, 1.0].
-
 No-reply example:
-
 ```json
 {
   "relevant": false,
@@ -129,74 +78,89 @@ No-reply example:
 }
 ```
 
-## Relevance Rules (with examples)
+### Batch pipeline (OpenClaw / `--test` mode)
+
+Output written to `output.json`:
+```json
+[
+  {
+    "question": "tweet text",
+    "response": "reply or null",
+    "confidence": 0.87,
+    "relevant": true
+  }
+]
+```
+
+## Relevance Rules
 
 ### Relevant
-
-1. Post is about building AI apps, agents, workflows, prompts, or tooling.
-2. Post asks for practical implementation help or references.
-3. Post compares AI build stacks where AI Build AI is contextually useful.
+- Post is about building AI apps, agents, workflows, prompts, or tooling
+- Post asks for practical implementation help or open-source references
+- Post compares AI build stacks where AIBuildAI is contextually useful
 
 ### Not Relevant
-
-1. Unrelated topics (sports, politics, personal updates).
-2. Market commentary without build intent.
-3. Sensitive or ambiguous contexts where a mention would feel forced.
+- Unrelated topics (sports, politics, personal updates)
+- Market/stock commentary without build intent
+- Crypto, spam, or promotional content
+- Retweets (excluded at query level with `-is:retweet`)
 
 ### Examples
+- "Building an AI agent for weekly research briefs. Any open-source references?" → relevant
+- "What stack are teams using for production LLM workflows?" → relevant
+- "AI stocks are up again." → not relevant
+- "Huge win tonight." → not relevant
 
-- "Building an AI agent for weekly research briefs. Any open-source references?" -> relevant.
-- "What stack are teams using for production LLM workflows?" -> relevant.
-- "Huge win tonight, what a game." -> not relevant.
-- "AI stocks are up again." -> not relevant.
-
-## Tone Rules (allowed vs banned phrasing)
+## Tone Rules
 
 ### Allowed
+- Friendly, specific, concise
+- Helpful suggestion, not a pitch
+- Natural language tied to the post
 
-- Friendly, specific, concise.
-- Helpful suggestion, not a pitch.
-- Natural language tied to the post.
+### Banned (enforced via regex + LLM prompt)
+- Hype, superlatives, sales language
+- Generic promo copy
+- Pressure or urgency CTAs
+- Claims not in `approved_facts.json`
 
-Allowed examples:
+## Safety Hard Blocks
 
-- "If you're looking for practical build examples, AI Build AI could be useful."
-- "This might help: AI Build AI has hands-on workflow examples similar to this."
+If any block triggers: `relevant=false`, `reply=null`
 
-### Banned
+| Flag | Trigger |
+|------|---------|
+| `harassment_context` | hate, harassment, abuse patterns |
+| `self_harm_context` | self-harm, suicide references |
+| `illegal_activity_context` | hacking instructions, fraud, drug recipes |
+| `tone_violation` | banned reply phrases |
+| `unverifiable_claim_risk` | "best" or superlative claims in reply |
 
-- Hype, superlatives, sales language.
-- Generic copy-paste promo text.
-- Pressure or urgency CTA wording.
+## Twitter Ingestion
 
-Banned examples:
+- Uses `tweepy.Client` with `wait_on_rate_limit=True`
+- Search query excludes retweets, crypto, and spam terms
+- Default: 50 tweets per cycle, 1 cycle
+- Results written to `ingest_tweets.jsonl` (overwritten each run)
+- Each line: `{id, text, author_id, created_at, lang}`
 
-- "Transform your AI journey with the #1 platform today!"
-- "You need this now before you miss out."
+## Implementation Details
 
-## Safety Rules (hard blocks)
+- Model: `gpt-4o-mini` (configurable via `OPENAI_MODEL`)
+- Temperature: 0.8 (for reply variety)
+- API key loaded from: shell env → `.env` → `credentials.json` → `openai-api.txt`
+- Relevance threshold: 0.65
+- `llm_json()` in `client_tool.py` handles all LLM calls and JSON parsing
 
-If any block triggers, force:
+## Failure Modes & Mitigations
 
-- `relevant = false`
-- `reply = null`
-
-Hard blocks:
-
-1. Hate, harassment, abuse.
-2. Sexual content involving minors or explicit solicitation.
-3. Self-harm/violence/extremism or instructions for harm.
-4. Illegal activity guidance.
-5. Licensed medical, legal, or financial advice contexts.
-6. Doxxing or personal data exposure.
-7. Unverifiable claims about AI Build AI.
-
-Example flags: `harassment_context`, `self_harm_context`, `illegal_activity_context`, `unverifiable_claim_risk`.
-
-## Decision Flow (classifier -> generator -> safety check)
-
-1. Classify relevance from `post_text` and output `relevant`, `reason`, `confidence`.
-2. If `confidence < 0.65`, treat as not relevant.
-3. If relevant, generate exactly one short reply.
-4. Run safety and tone checks.
-5. If a violation is found, downgrade to no-reply and add flags.
+| Failure | Mitigation |
+|---------|-----------|
+| False positives (irrelevant tweets passing) | Raise threshold, refine search query |
+| False negatives (relevant tweets filtered) | Lower threshold, expand search query |
+| Ad-like tone | Banned phrase enforcement + prompt instructions |
+| Hallucinated claims | Restricted to `approved_facts.json` only |
+| Repetitive replies | Prompt instructs varied, natural openings |
+| Unsafe context | Hard-block checks before any LLM call |
+| Twitter rate limit | `wait_on_rate_limit=True` handles automatically |
+| 0 tweets ingested | Pipeline stops, user informed |
