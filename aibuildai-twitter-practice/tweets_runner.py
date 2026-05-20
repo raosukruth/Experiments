@@ -288,7 +288,7 @@ def main():
 
 
     if args and args[0] == "--test":
-        prompts_path = os.path.join(os.path.dirname(__file__), "prompts.txt")
+        prompts_path = os.path.join(os.path.dirname(__file__), "tweets.txt")
         with open(prompts_path, "r", encoding="utf-8") as f:
             prompts = [line.strip() for line in f if line.strip()]
         results = []
@@ -300,7 +300,7 @@ def main():
                 "confidence": decision.get("confidence")
             })
             print(f"Question {idx} finished.")
-        output_path = os.path.join(os.path.dirname(__file__), "prompts_output.json")
+        output_path = os.path.join(os.path.dirname(__file__), "tweet_eval_results.json")
         with open(output_path, "w", encoding="utf-8") as outf:
             json.dump(results, outf, indent=2)
         print(json.dumps(results, indent=2))

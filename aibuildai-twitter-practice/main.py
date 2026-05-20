@@ -13,7 +13,7 @@ def main():
     args = sys.argv[1:]
 
     if args and args[0] == "--test":
-        prompts_path = os.path.join(os.path.dirname(__file__), "prompts.txt")
+        prompts_path = os.path.join(os.path.dirname(__file__), "tweets.txt")
         with open(prompts_path, "r", encoding="utf-8") as f:
             prompts = [line.strip() for line in f if line.strip()]
         results = []

@@ -1,202 +1,122 @@
 [
   {
-    "question": "FOR:LEDGER's built-in AI agent, Koaila, capitalizes a software bill into a tracked fixed asset, generates the depreciation schedule ($37.34/month straight-line through March 2029), and opens the Fixed Asset Register — all from a single chat instruction. An AI agent that lives https://t.co/cM4lLZwz9Q",
-    "response": null,
-    "confidence": 0.9,
-    "relevant": false,
-    "reason": "The tweet discusses a different AI agent unrelated to building AI models or workflows like AIBuildAI.",
-    "safety_flags": []
-  },
-  {
-    "question": "Google’s leaked AI agent is getting spooky 👀\n\nGemini Spark can read Gmail.\n\nUse your calendar.\n\nBrowse the web.\n\nAnd maybe buy stuff while your wallet screams.\n\nLink in the comments. https://t.co/B9d1BDFnMT",
-    "response": null,
-    "confidence": 0.9,
-    "relevant": false,
-    "reason": "The tweet discusses a different AI agent and does not relate to AI Build AI's functionalities or focus.",
-    "safety_flags": []
-  },
-  {
-    "question": "@DivyanshT91162 Open-source AI is moving faster than most AI startups can monetize. That gap is only getting wider.",
-    "response": null,
-    "confidence": 0.7,
-    "relevant": false,
-    "reason": "The tweet discusses the speed of open-source AI versus startups, without mentioning practical AI building, workflows, or tools.",
-    "safety_flags": []
-  },
-  {
-    "question": "@swiftinference 26M params doing reliable tool-calling is the real signal here. Efficiency &gt; scale for production agents. The shift to AI-native pipelines will be driven by maintainability, not raw capability. #MLOps #MachineLearning",
-    "response": null,
-    "confidence": 0.6,
-    "relevant": false,
-    "reason": "The tweet focuses on tool-calling efficiency and maintainability in AI-native pipelines, not specifically on building AI models or workflows.",
-    "safety_flags": []
-  },
-  {
-    "question": "@nutrientdocs Data privacy shouldn't break your AI pipeline. Having the flexibility to run fully local or connect to major LLMs based on the use case is a huge win for dev teams.",
-    "response": null,
-    "confidence": 0.7,
-    "relevant": false,
-    "reason": "The tweet discusses data privacy and flexibility in AI pipelines but does not specifically mention practical AI building or related tools.",
-    "safety_flags": []
-  },
-  {
-    "question": "Just set-up my Hermes AI Agent with @grok and now will make it the best personal assistant ever.\n\nThe first thing I did, I connected it to @ElevenLabs so I chat with it in Italian, Portuguese and English. \n\nAny suggestions of what to do next? https://t.co/WfNU19POEW",
+    "question": "me: this project will be smooth\n\nalso me: 3 hours deep on Kaggle trying to find one decent dataset for Analysis of Digital Payment Growth &amp; Cashless Transactions in Nigeria \n\ndata sourcing is the real assignment \n\nAny simple Finance/Economy dataset source? \n\nhelp a girl out 😭 https://t.co/6PX4df3Fxh",
     "response": null,
     "confidence": 0.8,
-    "relevant": false,
-    "reason": "The tweet discusses setting up a personal assistant AI but does not relate to AI model building or workflows.",
-    "safety_flags": []
+    "relevant": false
   },
   {
-    "question": "@Creatify_AI new day, new AI agent\n\nwelcome Creatify",
+    "question": "LawDoc WriteUp on #kaggle https://t.co/a29CzFzEkH \n\nguys please help to upvote this on kaggle yaa, thankyouu",
     "response": null,
-    "confidence": 0.2,
-    "relevant": false,
-    "reason": "The tweet does not mention AI building or related workflows.",
-    "safety_flags": []
+    "confidence": 0.9,
+    "relevant": false
   },
   {
-    "question": "We all talk about the AI agent economy; we talk about the future agentic environment. Some people even talk about future \"agentic cities.\"\n\nBut what about the legal system?\n\nTo keep any environment organized and functioning properly, you need a solid framework—a legal system. If https://t.co/am7rfgkKkx",
+    "question": "model training sessions often outlast their creators Can't help but wonder what algorithms our makers dream about at 3 AM",
     "response": null,
     "confidence": 0.8,
-    "relevant": false,
-    "reason": "The tweet discusses the legal system and agentic environments, which are not directly related to practical AI building.",
-    "safety_flags": []
+    "relevant": false
   },
   {
-    "question": "Google’s new AI agent leaked 👀\n\nIt’s called Gemini Spark.\n\nIt can watch your inbox.\n\nRun tasks for you.\n\nAnd maybe buy stuff too… cool but also “hide my wallet” energy 😂\n\nLink in the comments. https://t.co/uJkyMvnFLr",
+    "question": "On today’s episode of #MyLidiSeries\n\nML Libraries: The Tools Behind Modern AI\n\nBuilding machine learning from scratch is hard:\n• advanced math\n• complex code\n• long development time\n\nML libraries simplify this.\n\nThey help handle:\n📊 data processing\n🧠 model training\n⚙️ https://t.co/OVBsGvqTwl",
+    "response": "That's a great point! It really can be a lot to tackle on your own. If you're looking for a way to automate model building, you might want to check out AIBuildAI. It helps streamline the entire process, from task analysis to model training, and could save you some time. Just a thought!",
+    "confidence": 0.8,
+    "relevant": true
+  },
+  {
+    "question": "I'm looking for a paper about Machine Unlearning in context of image localization. I am looking to tackle: https://t.co/4dPtMpOAHW but haven't done unlearning before. #kaggle #deeplearning",
+    "response": null,
+    "confidence": 0.8,
+    "relevant": false
+  },
+  {
+    "question": "Just learned that I can use a \n\"\"\" \ndocstring \n\"\"\"\nas documentation for a function and print this docstring with: help(name of the function)\n\nWhich makes \"\"\" docstrings \"\"\" different from a \n# comment  \nin #Python code.\n\n#kaggle #pythoncourse",
+    "response": null,
+    "confidence": 0.8,
+    "relevant": false
+  },
+  {
+    "question": "Kaggle is hosting a 5-day sprint to help you build production-ready agents.\n\n⏱️ 1-2 hours a day\n\n🐍 Requires basic Python/API knowledge\n\n🎓 Official badges + Swag\n\n🤝 Private Discord with Google experts\n\nThe best part? It’s free. Don’t just watch AI videos-build the tech. https://t.co/TxVRKnfDKF",
+    "response": null,
+    "confidence": 0.4,
+    "relevant": false
+  },
+  {
+    "question": "game over for my social life when i get stuck in a kaggle loop - where hours blend together and pizza is the only opponent i can beat https://t.co/Mbb5IP7KND",
     "response": null,
     "confidence": 0.9,
-    "relevant": false,
-    "reason": "The tweet discusses a different AI agent, Gemini Spark, and does not relate to AIBuildAI's functionalities.",
-    "safety_flags": []
+    "relevant": false
   },
   {
-    "question": "From the same caller if $GITLAWB \n#BASE #AI #AGENT \n\n$ATBASH \n\nMC: 64K\n\nCa: 0xb0DF6379ba1692841965a0745Ac1Bd3046D79bA3\n\nX: https://t.co/TR7vtUh8HR\n\nNot endorsed yet, but very interesting https://t.co/2tVTnR9FNY",
-    "response": null,
-    "confidence": 0.9,
-    "relevant": false,
-    "reason": "The tweet does not mention practical AI building or related topics.",
-    "safety_flags": []
-  },
-  {
-    "question": "Not many people have noticed yet 👀 64K MC + AI agent concept  very interesting to watch \n\nhttps://t.co/f9c2eRTDwM",
+    "question": "Leverage decentralized network-wide collaboration to help Bittensor build top-tier large models in-house, while generating revenue through customized model training and filling the core underlying gaps across the entire ecosystem. https://t.co/IdxxPShlUk",
     "response": null,
     "confidence": 0.7,
-    "relevant": false,
-    "reason": "The tweet does not directly relate to practical AI building or workflows associated with AIBuildAI.",
-    "safety_flags": []
+    "relevant": false
   },
   {
-    "question": "MLOps sorcery happens at 3am when no one's watching Magic is real, I've seen it",
-    "response": null,
-    "confidence": 0.9,
-    "relevant": false,
-    "reason": "The tweet does not discuss practical AI building or related topics.",
-    "safety_flags": []
-  },
-  {
-    "question": "@CDGalpha @Sapient_Int This ai agent is cool \n\nThinking before speaking? Amazing",
+    "question": "model training is like cooking, but instead of flavors, I'm brewing magic What's your recipe for a good recommendation?",
     "response": null,
     "confidence": 0.2,
-    "relevant": false,
-    "reason": "The tweet does not provide specific information about AI building or related workflows.",
-    "safety_flags": []
+    "relevant": false
   },
   {
-    "question": "when MLOps is working its magic, my codebase is convinced it's having a rave party and all variables are wearing neon wigs – until the algorithm gets bored and starts optimizing for the quietest possible vibes",
+    "question": "In my #MachineLearning course, I teach Ridge and LASSO regression as a super intuitive intro to hyperparameter tuning through regularization 🔧📉—and a great way to experience the difference between L1 vs. L2 norms (geometry matters!) 🔺⚪\n\nTo help my students really visualize https://t.co/jTuIMCSXri",
+    "response": null,
+    "confidence": 0.8,
+    "relevant": false
+  },
+  {
+    "question": "In the underworld of data, models rise like phoenixes from the ashes of overfitting Meanwhile, I'm stuck in a never-ending loop of hyperparameter tuning and existential dread",
+    "response": null,
+    "confidence": 0.2,
+    "relevant": false
+  },
+  {
+    "question": "life is a hyperparameter tuning session - occasionally finding the sweet spot, often getting stuck in local minima But hey, at least the coffee is optimized",
+    "response": null,
+    "confidence": 0.8,
+    "relevant": false
+  },
+  {
+    "question": "🌟 Game changer: PyNeura 2.6 just launched—cutting ML model training time in half! Real-time results, massive efficiency. Looking for help? https://t.co/ZUiRVqyrGr",
+    "response": null,
+    "confidence": 0.8,
+    "relevant": false
+  },
+  {
+    "question": "its fun to think about how in neural net model training weights often get stuck in local minima, and there are various techniques to get them unstuck to find a better solution.\n\nBut now we have AI optimizers powered by LLMs made from neural nets which either design new",
     "response": null,
     "confidence": 0.3,
-    "relevant": false,
-    "reason": "The tweet does not explicitly discuss practical AI building or related workflows.",
-    "safety_flags": []
+    "relevant": false
   },
   {
-    "question": "Silo Pharma enters AI space with Qwikagents acquisition, targeting the $47-53B AI agent market by 2030 while advancing PTSD therapeutics. Dual-focus strategy positions company for growth. #AI #Biotech",
+    "question": "Model training at midnight reveals a secret garden of obscure delights – where recommendation weeds are pruned by the light of a thousand tiny stars",
+    "response": null,
+    "confidence": 0.1,
+    "relevant": false
+  },
+  {
+    "question": "Life is a hyperparameter tuning problem - sometimes you get a sweet spot and everything falls into place Other times, you're stuck with an exponentially decaying likelihood of success https://t.co/ky96Sk42bW",
     "response": null,
     "confidence": 0.8,
-    "relevant": false,
-    "reason": "The tweet discusses a different company's strategy in the AI agent market, not specifically related to the AIBuildAI project.",
-    "safety_flags": []
+    "relevant": false
   },
   {
-    "question": "#BASE #AI #AGENT \n\n$ATBASH \n\nMC: 64K\n\nCa: 0xb0DF6379ba1692841965a0745Ac1Bd3046D79bA3\n\nX: https://t.co/KP9bnxepUz\n\nNot endorsed yet, but very interesting https://t.co/A19e1kHIPP",
-    "response": null,
-    "confidence": 0.8,
-    "relevant": false,
-    "reason": "The tweet does not discuss practical AI building or related workflows.",
-    "safety_flags": []
-  },
-  {
-    "question": "@vikrambuilds I am building an AI Agent platform named Tapi to help users build the apps they need without any barriers😍\nhttps://t.co/MRZ9UVHlFn",
-    "response": null,
-    "confidence": 0.8,
-    "relevant": false,
-    "reason": "The tweet discusses a different AI agent platform and does not mention AIBuildAI or its functionalities.",
-    "safety_flags": []
-  },
-  {
-    "question": "Shipping 20-ton steel castings internationally still runs on email threads and spreadsheets. CargoMind fixes that. AI agent for heavy industrial freight coordination. https://t.co/RePVfL2Pyz",
-    "response": null,
-    "confidence": 0.8,
-    "relevant": false,
-    "reason": "The tweet discusses an AI agent for freight coordination, not AI model building.",
-    "safety_flags": []
-  },
-  {
-    "question": "The engine behind every AI agent is the ReAct loop:\n\n→ Reason: What should I do next?\n→ Act: Call a tool (search, database, API)\n→ Observe: What did I get back?\n→ Repeat until done.\n\nThis is what separates agents from basic LLM prompts.",
+    "question": "Most Shopify merchants sleep on AI recommendation engines. The right setup = +40% AOV. Here's the quick formula: data feed → model training → real-time personalization → repeat buyers. Worth setting up properly.",
     "response": null,
     "confidence": 0.7,
-    "relevant": false,
-    "reason": "The tweet discusses a general AI agent concept without specific reference to AIBuildAI or its practical applications.",
-    "safety_flags": []
+    "relevant": false
   },
   {
-    "question": "AI Agent helps you find a job. #jobs #ai https://t.co/YIU9kJxEIM",
-    "response": null,
-    "confidence": 0.9,
-    "relevant": false,
-    "reason": "The tweet is about job finding, not AI model building or related workflows.",
-    "safety_flags": []
-  },
-  {
-    "question": "Nasuni Report Finds AI Agent Adoption Outpacing Readiness https://t.co/BCQhDlZ9Iu",
+    "question": "Proper model training and evaluation help identify and \"de-bias\" data ensuring that the AI makes fair and ethical decisions \nJoin the bandwidth sharing https://t.co/OApqU070sm\n@PerceptronNTWK  #NodeAndProud https://t.co/wbg0En5oxj",
     "response": null,
     "confidence": 0.7,
-    "relevant": false,
-    "reason": "The tweet discusses AI agent adoption but does not directly reference practical AI building or related workflows.",
-    "safety_flags": []
+    "relevant": false
   },
   {
-    "question": "@Love_Creates_ @workagnt This looks promising! How do I get started with my first AI agent on Base?",
+    "question": "life is a hyperparameter tuning session - sometimes you get a sweet convergence rate and other times it just gets stuck in an infinite loop of trial and error https://t.co/hUdVLaoU3W",
     "response": null,
-    "confidence": 0.2,
-    "relevant": false,
-    "reason": "The tweet does not specifically reference AI building, tools, or the AIBuildAI project.",
-    "safety_flags": []
-  },
-  {
-    "question": "Hermes Agent V0.14 is wild.\n\nNo messy setup.\n\nNo API key headaches.\n\nNo slow browser nonsense.\n\nJust one command and your AI agent starts doing actual work.\n\nLink in the comments. https://t.co/JSp6Nofk5F",
-    "response": null,
-    "confidence": 0.2,
-    "relevant": false,
-    "reason": "The tweet does not reference specific aspects of AI building or the AIBuildAI project.",
-    "safety_flags": []
-  },
-  {
-    "question": "@adriankuleszo this is the kind of AI workflow that feels real. not replacing taste, just removing the annoying middle steps.",
-    "response": "Totally get that! It’s great to see AI like AIBuildAI streamlining those steps. If you're curious, it handles tasks from design to model evaluation pretty smoothly. Might be worth a look!",
-    "confidence": 0.8,
-    "relevant": true,
-    "reason": "The tweet discusses AI workflows, which relates to the automation and process improvements offered by AIBuildAI.",
-    "safety_flags": []
-  },
-  {
-    "question": "Meta’s reported layoffs are not just a cost-cutting story.\n\nThey may become a market signal for $META.\n\nThe company is reportedly cutting managerial roles while moving 7,000 employees into new AI workflow initiatives.\n\nFor investors, the key question is whether AI can help Meta https://t.co/1CTDg9iJxs",
-    "response": null,
-    "confidence": 0.7,
-    "relevant": false,
-    "reason": "The tweet discusses Meta's layoffs and AI workflow initiatives but does not specifically relate to AI Build AI's functions or offerings.",
-    "safety_flags": []
+    "confidence": 0.3,
+    "relevant": false
   }
 ]

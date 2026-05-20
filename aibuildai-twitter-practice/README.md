@@ -15,7 +15,7 @@ Monitors Twitter/X for tweets about AI building, agents, workflows, and tooling.
 | Path | Purpose |
 |------|---------|
 | `main.py` | CLI entrypoint for the live Twitter pipeline |
-| `prompts_runner.py` | Standalone test runner against hand-written prompts |
+| `tweets_runner.py` | Standalone test runner against hand-written prompts |
 | `twitter_ingest.py` | Fetches tweets from Twitter API |
 | `tools/client_tool.py` | OpenAI client, key loading, `approved_facts.json`, shared `llm_json()` |
 | `tools/relevance_tool.py` | Relevance classification (prompt + LLM call) |
@@ -24,7 +24,7 @@ Monitors Twitter/X for tweets about AI building, agents, workflows, and tooling.
 | `tools/pipeline_tool.py` | `process_tweet()` and `process_batch()` orchestration |
 | `tools/ingest_tool.py` | Wrapper around `twitter_ingest.run_ingest()` |
 | `approved_facts.json` | Facts the LLM is allowed to reference in replies |
-| `prompts.txt` | Hand-written test prompts, one per line |
+| `tweets.txt` | Hand-written test prompts, one per line |
 | `SKILL.md` | OpenClaw skill definition — enables running via `openclaw tui` |
 
 ## Setup
@@ -90,22 +90,22 @@ python3 twitter_ingest.py
 
 ### Via CLI — Prompt-based test runner
 
-`prompts_runner.py` is a self-contained test runner that works against hand-written prompts in `prompts.txt`. It does not require a Twitter API key and is useful for validating relevance, safety, and reply quality without ingesting live tweets.
+`tweets_runner.py` is a self-contained test runner that works against hand-written prompts in `tweets.txt`. It does not require a Twitter API key and is useful for validating relevance, safety, and reply quality without ingesting live tweets.
 
-**Batch mode** — processes every line in `prompts.txt`:
+**Batch mode** — processes every line in `tweets.txt`:
 ```bash
-python3 prompts_runner.py --test
+python3 tweets_runner.py --test
 ```
-Results are written to `prompts_output.json` (overwritten each run) and printed to the terminal.
+Results are written to `tweet_eval_results.json` (overwritten each run) and printed to the terminal.
 
 **Single prompt:**
 ```bash
-python3 prompts_runner.py "your prompt here"
+python3 tweets_runner.py "your prompt here"
 ```
 
 **Via stdin:**
 ```bash
-echo "your prompt here" | python3 prompts_runner.py
+echo "your prompt here" | python3 tweets_runner.py
 ```
 
 ## Output
@@ -123,9 +123,9 @@ echo "your prompt here" | python3 prompts_runner.py
 ]
 ```
 
-**`prompts_output.json`** — written by `prompts_runner.py --test`, overwritten each run. Same schema as above.
+**`tweet_eval_results.json`** — written by `tweets_runner.py --test`, overwritten each run. Same schema as above.
 
-**Single-tweet output** (both `main.py` and `prompts_runner.py`):
+**Single-tweet output** (both `main.py` and `tweets_runner.py`):
 
 ```json
 {
