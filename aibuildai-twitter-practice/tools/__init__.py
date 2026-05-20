@@ -3,6 +3,7 @@ from .ingest_tool import ingest_tweets, load_tweets_from_file, load_tweets_from_
 from .pipeline_tool import process_batch, process_tweet
 from .relevance_tool import classify_relevance
 from .reply_tool import generate_tweet_reply
+from .report_tool import results_to_markdown
 from .safety_tool import detect_hard_blocks, safety_and_tone_check
 
 __all__ = [
@@ -17,4 +18,5 @@ __all__ = [
     "generate_tweet_reply",
     "process_tweet",
     "process_batch",
+    "results_to_markdown",
 ]

@@ -66,6 +66,7 @@ All logic lives in the following Python files (relative to the repo root):
 | `tools/reply_tool.py` | Generate a natural, human-sounding reply |
 | `tools/pipeline_tool.py` | `process_tweet()` and `process_batch()` — orchestrate the full pipeline |
 | `tools/client_tool.py` | Build the OpenAI client and load approved facts |
+| `tools/report_tool.py` | `results_to_markdown()` — converts `output.json` or `tweet_eval_results.json` to a markdown report |
 | `main.py` | CLI entrypoint for the live pipeline: single tweet or `--test` batch |
 | `tweets_runner.py` | Test runner: `--test` reads `tweets.txt`; `--test --source ingest` reads `ingest_tweets.jsonl` |
 
@@ -84,6 +85,9 @@ There are two pipeline modes:
 **Test mode (ingest file)** — runs against previously ingested real tweets from `ingest_tweets.jsonl`, no Twitter API required, writes to `tweet_eval_results.json`:
 - User says: "test with ingested tweets", "run the test pipeline from ingest", "run against ingest file"
 
+**Report mode** — converts the latest results JSON to a readable markdown report:
+- User says: "generate a report", "convert to markdown", "show me the results as markdown", "export to markdown"
+
 Do NOT use for general Twitter browsing, posting tweets manually, or unrelated LLM tasks.
 
 ---
@@ -93,6 +97,7 @@ Do NOT use for general Twitter browsing, posting tweets manually, or unrelated L
 > **Choose the mode based on what the user asked for.**
 > - Live mode: follow Steps 1 → 2 → 3 below (requires `TWITTER_BEARER_TOKEN`)
 > - Test mode: skip to [Test Mode](#test-mode) (only requires `OPENAI_API_KEY`)
+> - Report mode: skip to [Report Mode](#report-mode) (no API keys needed)
 
 ---
 
@@ -146,6 +151,30 @@ with open('tweet_eval_results.json', 'w', encoding='utf-8') as out:
 print(json.dumps({'processed': len(results), 'output_path': 'tweet_eval_results.json'}, indent=2))
 "
 ```
+
+---
+
+### Report Mode
+
+Converts a results JSON file to a readable markdown report. Each tweet is shown with its input and generated reply (or empty if none).
+
+**From `output.json`** (live pipeline results):
+
+```bash
+python3 -c "from tools.report_tool import results_to_markdown; results_to_markdown()"
+```
+
+Output is written to `output.md`.
+
+**From `tweet_eval_results.json`** (test pipeline results):
+
+```bash
+python3 -c "from tools.report_tool import results_to_markdown; results_to_markdown(input_path='tweet_eval_results.json', output_path='tweet_eval_results.md')"
+```
+
+Output is written to `tweet_eval_results.md`.
+
+Tell the user which file was written when done.
 
 ---
 

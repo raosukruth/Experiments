@@ -1,132 +1,102 @@
 [
   {
-    "question": "Building an AI agent for weekly research briefs. Any open-source references?",
+    "question": "1. Spent the entire weekend trying random hyperparameter combos on my CNN for a Kaggle comp. There has to be a better way than this.",
+    "response": "That sounds frustrating! Have you looked into AIBuildAI? It automates the hyperparameter tuning and model building process, which might save you some time. Just provide a task description and your data, and it handles the rest. Might be worth a try!",
+    "confidence": 0.8
+  },
+  {
+    "question": "2. AutoGluon vs H2O vs just writing my own pipeline \u2014 anyone have strong opinions for tabular comps?",
     "response": null,
     "confidence": 0.7
   },
   {
-    "question": "Anyone here using open-source tools for AI workflow automation?",
-    "response": "Hey there! I\u2019ve heard some folks talking about AIBuildAI for automating AI workflows. It\u2019s an interesting tool that builds models from task descriptions and data. If you're looking for something open-source, it might be worth checking out their GitHub. Just a thought!",
+    "question": "3. Just read the MLE-Bench paper. Wild how far autonomous ML agents have come in a year.",
+    "response": "It really is fascinating to see the progress! If you're interested, the AIBuildAI project has some impressive results, especially with its recent #1 ranking on MLE-Bench. It automates the whole machine learning workflow, which is quite a leap. Have you looked into how it builds AI models from just task descriptions and data?",
     "confidence": 0.8
   },
   {
-    "question": "What\u2019s the best way to keep up with new AI agent frameworks?",
+    "question": "4. Another 'AI builds AI' demo. These all fall apart the moment you point them at a real messy dataset. Convince me otherwise.",
     "response": null,
-    "confidence": 0.4
-  },
-  {
-    "question": "Looking for practical examples of agent-based AI projects.",
-    "response": "That sounds interesting! You might want to check out AIBuildAI. It automatically builds AI models from task descriptions and data, and has examples for various tasks like image segmentation and classification. It could be a useful resource for practical applications!",
     "confidence": 0.8
   },
   {
-    "question": "How do you evaluate open-source AI tools for reliability?",
+    "question": "5. I have a CSV of customer churn data. Where do I even start with building a model? Total ML beginner.",
     "response": null,
     "confidence": 0.3
   },
   {
-    "question": "Tips for integrating multiple AI APIs in one project?",
+    "question": "6. Working on protein structure prediction for a non-standard residue set. Existing models don't quite fit.",
     "response": null,
-    "confidence": 0.3
+    "confidence": 0.7
   },
   {
-    "question": "Anyone tried combining LLMs with workflow engines?",
-    "response": null,
-    "confidence": 0.3
-  },
-  {
-    "question": "What\u2019s your favorite open-source repo for AI agents?",
+    "question": "7. AI is moving so fast I can barely keep up",
     "response": null,
     "confidence": 0.2
   },
   {
-    "question": "How do you handle prompt engineering at scale?",
+    "question": "8. Building an agentic workflow with LangGraph and it keeps deadlocking. Anyone debugged this?",
     "response": null,
     "confidence": 0.8
   },
   {
-    "question": "Best practices for sharing AI research updates with a team?",
+    "question": "9. Anyone using Weights & Biases for experiment tracking on autoML runs? Worth it?",
     "response": null,
-    "confidence": 0.2
-  },
-  {
-    "question": "Just spent 2 weeks tuning a model for protein structure prediction. The training pipeline is a nightmare. Anyone have a better way to manage model iteration?",
-    "response": "That sounds really challenging! Have you heard about AIBuildAI? It automates the whole model-building process, including tuning and evaluation. It might help streamline your pipeline a bit. Just a thought!",
     "confidence": 0.8
   },
   {
-    "question": "We're trying to automate the process of designing, training, and evaluating ML models for different tasks. Seems like a lot of companies are doing similar work. Are there any good open-source frameworks?",
-    "response": "That sounds interesting! You might want to check out AIBuildAI\u2014it automates the entire workflow for building ML models and has some solid results in competitions. It's open-source and available on GitHub if you're curious to explore! Good luck with your project!",
+    "question": "10. We're hiring ML engineers at our company. Strong Python + PyTorch required.",
+    "response": null,
     "confidence": 0.8
   },
   {
-    "question": "Looking to build a system that can handle different types of AI tasks (classification, regression, segmentation) without manually rewriting the pipeline. Has anyone done this at scale?",
-    "response": "That sounds like a big project! You might want to check out AIBuildAI. It automates the whole process of building AI models, covering various tasks like classification and segmentation. It\u2019s been used successfully in competitions, so it might be a good fit for what you're looking to do!",
-    "confidence": 0.8
-  },
-  {
-    "question": "What's a good approach for automatically tuning hyperparameters across multiple models? Current workflow is very manual and error-prone.",
-    "response": "That sounds frustrating! If you're looking for a more automated approach, you might want to check out AIBuildAI. It handles hyperparameter tuning as part of its workflow, so it could save you some time and reduce errors. Just a thought!",
-    "confidence": 0.8
-  },
-  {
-    "question": "Anyone using automated ML workflows in production? Would love to hear about your architecture and lessons learned.",
-    "response": "Hey there! I haven't used automated ML workflows in production yet, but I've heard good things about AIBuildAI. It seems to handle the entire workflow, from task analysis to model evaluation. If you're curious, you might check out their GitHub for some examples and insights on how it works!",
-    "confidence": 0.8
-  },
-  {
-    "question": "How do you handle the design-implement-train-evaluate loop efficiently when working with multiple model types and datasets?",
-    "response": "That sounds challenging! I\u2019ve heard that using AIBuildAI might help streamline that loop. It automates tasks from design to evaluation, which could save you time. If you're curious, it might be worth checking out their GitHub for more info!",
+    "question": "11. AI regulation is moving too slowly in the EU.",
+    "response": null,
     "confidence": 0.9
   },
   {
-    "question": "Are there tools that can abstract away the boilerplate of ML model development so teams can focus on the actual research?",
-    "response": "That\u2019s a great question! You might want to check out AIBuildAI. It automates a lot of the ML workflow, from task analysis to model training, which could help your team focus more on the research side. It has some solid performance metrics, too. Worth a look!",
+    "question": "12. Just launched my new AutoML SaaS! Check it out",
+    "response": null,
+    "confidence": 0.8
+  },
+  {
+    "question": "13. Fine-tuning Llama 3 on a domain corpus and the loss curves look weird around step 4k. Anyone seen this?",
+    "response": null,
+    "confidence": 0.7
+  },
+  {
+    "question": "14. Best practices for serving a 70B model on 4xH100? Looking at vLLM vs TGI vs SGLang.",
+    "response": null,
+    "confidence": 0.7
+  },
+  {
+    "question": "15. PyTorch 2.6 just dropped, the compile improvements look serious",
+    "response": null,
+    "confidence": 0.8
+  },
+  {
+    "question": "16. Built a RAG pipeline over our internal docs but retrieval quality is brutal. Hybrid search worth the effort?",
+    "response": null,
+    "confidence": 0.8
+  },
+  {
+    "question": "17. Just got my GPT-5 API access. Anyone else playing with it?",
+    "response": null,
     "confidence": 0.9
   },
   {
-    "question": "Building a segmentation model for medical imaging. The whole pipeline from data prep to model deployment is taking forever. Looking for ways to speed this up.",
-    "response": "That sounds really challenging! Have you checked out AIBuildAI? It automates the entire workflow for building AI models, including segmentation tasks. It might help streamline your process a bit. Just a thought!",
-    "confidence": 0.8
-  },
-  {
-    "question": "We need to compare performance of 5 different architectures for the same task. Doing this manually is killing productivity. Any automation tools?",
-    "response": "I totally get that! It can be really time-consuming to compare architectures manually. Have you checked out AIBuildAI? It automates the whole process of building models and could save you a lot of time. Just a thought!",
-    "confidence": 0.8
-  },
-  {
-    "question": "Just realized our training code works for one task but breaks for another. Need a more robust framework that can handle variable inputs and outputs.",
+    "question": "18. Doing a literature review on diffusion model alignment. Any recent papers I should not miss?",
     "response": null,
-    "confidence": 0.7
+    "confidence": 0.9
   },
   {
-    "question": "How do teams at scale handle managing multiple model versions and training runs? Version control for ML is still a mess for us.",
+    "question": "19. Trying to get whisper-large running on-device for a mobile app. Quantization tips?",
     "response": null,
-    "confidence": 0.7
+    "confidence": 0.8
   },
   {
-    "question": "Spent the last month optimizing a model only to find the real bottleneck was in the data pipeline, not the model. Anyone have systematic approaches to this?",
+    "question": "20. My prompt keeps hallucinating JSON keys. Tried structured outputs but still flaky.",
     "response": null,
-    "confidence": 0.7
-  },
-  {
-    "question": "Looking for recommendations on frameworks that can handle end-to-end ML: design \u2192 code \u2192 train \u2192 validate \u2192 deploy. Anything battle-tested?",
-    "response": "Hey! If you're exploring options, you might want to check out AIBuildAI. It automates the whole ML workflow, from design to deployment, and has shown solid performance in competitions. Just a thought! \ud83d\ude0a",
-    "confidence": 0.8
-  },
-  {
-    "question": "Our research team keeps reinventing the wheel for every new project. We need better infrastructure for rapid experimentation with AI models.",
-    "response": "That sounds really challenging! Have you looked into AIBuildAI? It automates a lot of the model-building process, which might help streamline your experiments. Just a thought!",
-    "confidence": 0.8
-  },
-  {
-    "question": "We built a custom training loop for wound segmentation but realized we need to add protein structure prediction next. Refactoring the whole codebase is not feasible. Looking for a flexible ML system that can handle multiple domains without major rewrites.",
-    "response": "That sounds like a challenging situation! You might want to check out AIBuildAI. It automates model building and supports various tasks like wound segmentation and protein classification, which could save you some refactoring work. Just a thought!",
-    "confidence": 0.8
-  },
-  {
-    "question": "Currently managing 15 different model training pipelines across our team. Each one has different data preprocessing, architecture choices, and evaluation metrics. Is there a framework that can unify this chaos while still allowing domain-specific customization?",
-    "response": "That sounds like quite the challenge! You might want to check out AIBuildAI. It automates the entire process of building AI models, which could help streamline your pipelines while still allowing for customization. It supports various tasks and might save you some time managing those different models!",
     "confidence": 0.8
   }
 ]
