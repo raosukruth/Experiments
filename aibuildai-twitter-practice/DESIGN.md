@@ -4,19 +4,29 @@
 
 For each tweet, the system decides if a reply mentioning AIBuildAI would be genuinely helpful and safe. It:
 
-1. Fetches real tweets from Twitter/X via the API
+1. Fetches tweets — either from the Twitter/X API or from a local `tweets.txt` file
 2. Classifies each tweet for relevance (LLM, grounded in approved facts, threshold 0.65)
 3. If relevant, generates one short natural non-promotional reply
 4. Applies safety and tone checks (hard blocks, banned phrases, unverifiable claims)
 5. Returns a structured result with confidence score
-6. Writes all results to `output.json`
+6. Writes all results to `output.json` (live) or `tweet_eval_results.json` (test)
+
+## Pipeline Modes
+
+There are two ways to run the pipeline:
+
+| Mode | Source | Output | Twitter API needed |
+|------|--------|--------|--------------------|
+| **Live** | Twitter API via `twitter_ingest.py` | `output.json` | Yes |
+| **Test** | `tweets.txt` or `ingest_tweets.jsonl` | `tweet_eval_results.json` | No |
 
 ## Code Structure
 
-Logic lives in `tools/` — `main.py` is a thin CLI entrypoint only.
+Logic lives in `tools/` — `main.py` and `tweets_runner.py` are thin CLI entrypoints only.
 
 ```
-main.py                  ← CLI: single tweet or --test batch
+main.py                  ← CLI: single tweet or --test batch (live pipeline)
+tweets_runner.py         ← CLI: test runner against tweets.txt or ingest_tweets.jsonl
 twitter_ingest.py        ← Twitter API ingestion (tweepy)
 tools/
   client_tool.py         ← OpenAI client, key loading, approved facts, llm_json()
@@ -24,10 +34,23 @@ tools/
   safety_tool.py         ← Hard-block patterns + tone checks
   reply_tool.py          ← Full reply prompt + LLM call
   pipeline_tool.py       ← process_tweet() + process_batch() orchestration
-  ingest_tool.py         ← Wrapper around twitter_ingest.run_ingest()
+  ingest_tool.py         ← ingest_tweets(), load_tweets_from_file(), load_tweets_from_jsonl()
 approved_facts.json      ← Ground truth facts the LLM may reference
+tweets.txt               ← Hand-written test tweets, one per line
 SKILL.md                 ← OpenClaw skill definition
 ```
+
+## Ingest Layer (`tools/ingest_tool.py`)
+
+Three functions cover all input sources:
+
+| Function | Source | Use case |
+|----------|--------|----------|
+| `ingest_tweets()` | Twitter API | Live pipeline |
+| `load_tweets_from_file()` | `tweets.txt` | Test with hand-written tweets |
+| `load_tweets_from_jsonl()` | `ingest_tweets.jsonl` | Test with previously ingested real tweets |
+
+All three return the same list-of-dicts shape (`id`, `text`, `author_id`, `created_at`, `lang`) so `process_batch()` consumes any of them without changes.
 
 ## Decision Flow
 
@@ -71,16 +94,16 @@ No-reply example:
 ```json
 {
   "relevant": false,
-  "reason": "Post is unrelated to AI software building.",
+  "reason": "Post is unrelated to AI model building.",
   "reply": null,
   "safety_flags": [],
   "confidence": 0.95
 }
 ```
 
-### Batch pipeline (OpenClaw / `--test` mode)
+### Batch pipeline
 
-Output written to `output.json`:
+Output written to `output.json` (live) or `tweet_eval_results.json` (test):
 ```json
 [
   {
@@ -95,21 +118,20 @@ Output written to `output.json`:
 ## Relevance Rules
 
 ### Relevant
-- Post is about building AI apps, agents, workflows, prompts, or tooling
-- Post asks for practical implementation help or open-source references
-- Post compares AI build stacks where AIBuildAI is contextually useful
+- Post is about building or automating ML models, training pipelines, or hyperparameter tuning
+- Post asks for practical implementation help or open-source AutoML references
+- Post compares ML build stacks where AIBuildAI is contextually useful
 
 ### Not Relevant
 - Unrelated topics (sports, politics, personal updates)
 - Market/stock commentary without build intent
 - Crypto, spam, or promotional content
-- Retweets (excluded at query level with `-is:retweet`)
+- Retweets and replies (excluded at query level with `-is:retweet -is:reply`)
 
 ### Examples
-- "Building an AI agent for weekly research briefs. Any open-source references?" → relevant
-- "What stack are teams using for production LLM workflows?" → relevant
+- "Stuck on hyperparameter tuning for my image classifier, any AutoML tools?" → relevant
+- "Building a RAG pipeline, looking for LangChain alternatives" → not relevant
 - "AI stocks are up again." → not relevant
-- "Huge win tonight." → not relevant
 
 ## Tone Rules
 
@@ -139,8 +161,9 @@ If any block triggers: `relevant=false`, `reply=null`
 ## Twitter Ingestion
 
 - Uses `tweepy.Client` with `wait_on_rate_limit=True`
-- Search query excludes retweets, crypto, and spam terms
-- Default: 50 tweets per cycle, 1 cycle
+- Search query targets ML practitioners asking for help (Kaggle, AutoML, model training, hyperparameter tuning)
+- Excludes retweets, replies, and crypto spam
+- Default: 25 tweets per cycle, 1 cycle
 - Results written to `ingest_tweets.jsonl` (overwritten each run)
 - Each line: `{id, text, author_id, created_at, lang}`
 

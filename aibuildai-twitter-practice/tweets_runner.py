@@ -288,9 +288,24 @@ def main():
 
 
     if args and args[0] == "--test":
-        prompts_path = os.path.join(os.path.dirname(__file__), "tweets.txt")
-        with open(prompts_path, "r", encoding="utf-8") as f:
-            prompts = [line.strip() for line in f if line.strip()]
+        source = "tweets"
+        if "--source" in args:
+            idx = args.index("--source")
+            if idx + 1 < len(args):
+                source = args[idx + 1]
+
+        if source == "ingest":
+            ingest_path = os.path.join(os.path.dirname(__file__), "ingest_tweets.jsonl")
+            with open(ingest_path, "r", encoding="utf-8") as f:
+                tweet_objs = [json.loads(line) for line in f if line.strip()]
+            prompts = [t["text"] for t in tweet_objs if t.get("text")]
+            print(f"[Runner] Reading from ingest_tweets.jsonl ({len(prompts)} tweets)")
+        else:
+            tweets_path = os.path.join(os.path.dirname(__file__), "tweets.txt")
+            with open(tweets_path, "r", encoding="utf-8") as f:
+                prompts = [line.strip() for line in f if line.strip()]
+            print(f"[Runner] Reading from tweets.txt ({len(prompts)} tweets)")
+
         results = []
         for idx, prompt in enumerate(prompts, 1):
             decision = process_post(post_text=prompt, client=client, approved_facts=approved_facts)
@@ -299,7 +314,7 @@ def main():
                 "response": decision.get("reply"),
                 "confidence": decision.get("confidence")
             })
-            print(f"Question {idx} finished.")
+            print(f"Tweet {idx} finished.")
         output_path = os.path.join(os.path.dirname(__file__), "tweet_eval_results.json")
         with open(output_path, "w", encoding="utf-8") as outf:
             json.dump(results, outf, indent=2)

@@ -6,6 +6,8 @@ description: >
   non-promotional replies that mention AIBuildAI where appropriate.
   Trigger when the user asks to: run the Twitter pipeline, check for new tweets,
   process mentions, generate replies, or run the reply bot.
+  Also trigger when the user asks to: run the test pipeline, run with tweets.txt,
+  test locally, run without Twitter, or test with ingested tweets.
 version: 1.0.0
 metadata:
   openclaw:
@@ -57,27 +59,97 @@ All logic lives in the following Python files (relative to the repo root):
 
 | File | Purpose |
 |---|---|
-| `twitter_ingest.py` / `tools/ingest_tool.py` | Fetch tweets from Twitter API |
+| `twitter_ingest.py` | Fetch tweets from Twitter API, write to `ingest_tweets.jsonl` |
+| `tools/ingest_tool.py` | `ingest_tweets()` — live API; `load_tweets_from_file()` — reads `tweets.txt`; `load_tweets_from_jsonl()` — reads `ingest_tweets.jsonl` |
 | `tools/relevance_tool.py` | Classify whether a tweet is relevant (threshold: 0.65 confidence) |
 | `tools/safety_tool.py` | Check for hard-block patterns (harassment, self-harm, illegal activity) |
 | `tools/reply_tool.py` | Generate a natural, human-sounding reply |
-| `tools/pipeline_tool.py` | Run the full pipeline over a batch of tweets |
+| `tools/pipeline_tool.py` | `process_tweet()` and `process_batch()` — orchestrate the full pipeline |
 | `tools/client_tool.py` | Build the OpenAI client and load approved facts |
-| `main.py` | CLI entrypoint: runs a single tweet or `--test` batch against the tools |
+| `main.py` | CLI entrypoint for the live pipeline: single tweet or `--test` batch |
+| `tweets_runner.py` | Test runner: `--test` reads `tweets.txt`; `--test --source ingest` reads `ingest_tweets.jsonl` |
 
 ---
 
 ## When to Use
 
-- User says: "run the Twitter pipeline", "check for new tweets", "process mentions"
-- User says: "generate replies", "run the reply bot", "start the bot"
-- User sets up a scheduled/recurring run (e.g. "every 30 minutes")
+There are two pipeline modes:
+
+**Live mode** — ingests real tweets from the Twitter API, writes to `output.json`:
+- User says: "run the Twitter pipeline", "check for new tweets", "process mentions", "run the reply bot", "start the bot"
+
+**Test mode (tweets.txt)** — runs against hand-written tweets in `tweets.txt`, no Twitter API required, writes to `tweet_eval_results.json`:
+- User says: "run the test pipeline", "run with tweets.txt", "test locally", "run without Twitter", "test the pipeline"
+
+**Test mode (ingest file)** — runs against previously ingested real tweets from `ingest_tweets.jsonl`, no Twitter API required, writes to `tweet_eval_results.json`:
+- User says: "test with ingested tweets", "run the test pipeline from ingest", "run against ingest file"
 
 Do NOT use for general Twitter browsing, posting tweets manually, or unrelated LLM tasks.
 
 ---
 
 ## Instructions
+
+> **Choose the mode based on what the user asked for.**
+> - Live mode: follow Steps 1 → 2 → 3 below (requires `TWITTER_BEARER_TOKEN`)
+> - Test mode: skip to [Test Mode](#test-mode) (only requires `OPENAI_API_KEY`)
+
+---
+
+### Test Mode
+
+**Option A — from `tweets.txt`** (hand-written test tweets, no Twitter API needed):
+
+```bash
+python3 tweets_runner.py --test
+```
+
+**Option B — from `ingest_tweets.jsonl`** (previously ingested real tweets, no Twitter API needed):
+
+```bash
+python3 tweets_runner.py --test --source ingest
+```
+
+Both options write results to `tweet_eval_results.json` and print to the terminal.
+
+Then report the summary to the user the same way as Step 3 below.
+
+Alternatively, you can call the ingest tools directly in Python:
+
+```bash
+python3 -c "
+import json
+from tools.client_tool import get_client, get_approved_facts
+from tools.ingest_tool import load_tweets_from_file, load_tweets_from_jsonl
+from tools.pipeline_tool import process_batch
+
+client = get_client()
+approved_facts = get_approved_facts()
+
+# Use load_tweets_from_file() for tweets.txt or load_tweets_from_jsonl() for ingest_tweets.jsonl
+tweets = load_tweets_from_file()
+
+results = process_batch(tweets=tweets, client=client, approved_facts=approved_facts)
+output = [
+  {
+    'question': r.get('text'),
+    'response': r.get('reply'),
+    'confidence': r.get('confidence'),
+    'relevant': r.get('relevant')
+  }
+  for r in results
+]
+
+with open('tweet_eval_results.json', 'w', encoding='utf-8') as out:
+  json.dump(output, out, indent=2, ensure_ascii=False)
+
+print(json.dumps({'processed': len(results), 'output_path': 'tweet_eval_results.json'}, indent=2))
+"
+```
+
+---
+
+### Live Mode
 
 ### Step 1 — Ingest tweets
 
