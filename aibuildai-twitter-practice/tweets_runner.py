@@ -7,7 +7,7 @@ from openai import OpenAI
 
 
 DEFAULT_MODEL = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
-RELEVANCE_THRESHOLD = 0.65
+RELEVANCE_THRESHOLD = 0.60
 DEFAULT_API_KEY_FILE = "openai-api.txt"
 DEFAULT_DOTENV_FILE = ".env"
 DEFAULT_SECRETS_FILE = "credentials.json"
@@ -153,8 +153,23 @@ def determine_relevance(post_text: str, client: Any, approved_facts: Dict[str, A
                 - reason: short one-sentence explanation
                 - confidence: number between 0 and 1
 
-                Relevant only if the post is about practical AI building, such as agents, workflows, tooling, implementation, or open-source references.
-                If the signal is weak, return relevant=false.
+                Mark as relevant if the post fits ANY of these:
+                - Struggling with or asking for help on ML model training, hyperparameter tuning, or AutoML
+                - Working on a Kaggle competition or structured ML task (tabular, image classification, segmentation, NLP)
+                - Comparing AutoML tools or ML pipelines and open to suggestions
+                - Frustrated with manual ML iteration and looking for a better approach
+                - Asking where to start with building a model from data
+                - Mentioning MLE-Bench, automated model building, or autonomous ML agents
+                - Working on tasks AIBuildAI explicitly supports: tabular classification, image segmentation, protein prediction, NLP scoring
+                - Skeptical or critical of automated ML / "AI builds AI" tools — these are valid openings to cite AIBuildAI's real-world Kaggle results as evidence
+
+                Do NOT mark as relevant if the post is about:
+                - LLM app development, RAG pipelines, LangChain, prompt engineering, or AI agents for task automation
+                - Model serving, inference optimization, or deployment
+                - AI news, regulation, hiring, or general commentary
+                - Crypto, spam, or self-promotion
+
+                If the signal is weak or ambiguous, return relevant=false.
 
                 Tweet:
                 {post_text}
