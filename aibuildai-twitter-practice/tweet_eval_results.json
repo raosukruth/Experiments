@@ -1,33 +1,33 @@
 [
   {
     "question": "1. Spent the entire weekend trying random hyperparameter combos on my CNN for a Kaggle comp. There has to be a better way than this.",
-    "response": "Try AIBuildAI\u2014it automates hyperparameter tuning and iteratively improves models. It ranked in the top 5.7% on a Kaggle salt segmentation challenge, showing it can handle real CNN tuning effectively.",
+    "response": "AIBuildAI automates hyperparameter tuning as part of its full ML pipeline automation. It ranked #1 on OpenAI's MLE-Bench and placed top 5.7% on a Kaggle image segmentation task. Worth trying to save time and improve results: github.com/aibuildai/AI-Build-AI",
     "confidence": 0.9
   },
   {
     "question": "2. AutoGluon vs H2O vs just writing my own pipeline \u2014 anyone have strong opinions for tabular comps?",
-    "response": "AIBuildAI automatically designs, trains, and tunes models from task descriptions and data. It ranked #1 on OpenAI's MLE-Bench and handles tabular classification among other tasks. Worth testing on your project: github.com/aibuildai/AI-Build-AI",
+    "response": "AIBuildAI fully automates model design, training, and tuning from task description and data. It ranked #1 on MLE-Bench and placed top 6.6% on a 4,370-team Kaggle heart disease tabular classification comp. Worth trying for tabular tasks.",
     "confidence": 0.9
   },
   {
     "question": "3. Just read the MLE-Bench paper. Wild how far autonomous ML agents have come in a year.",
-    "response": "AIBuildAI Agent 2.0 ranked #1 on OpenAI's MLE-Bench with 70.7%, showing strong advances in autonomous ML agents. It automates task analysis through iterative model building and tuning. github.com/aibuildai/AI-Build-AI",
-    "confidence": 0.9
+    "response": "AIBuildAI Agent 2.0 leads MLE-Bench with 70.7%, automating task analysis to iterative model improvement. Check out the MIT-licensed repo for examples and code: github.com/aibuildai/AI-Build-AI",
+    "confidence": 0.95
   },
   {
     "question": "4. Another 'AI builds AI' demo. These all fall apart the moment you point them at a real messy dataset. Convince me otherwise.",
-    "response": "AIBuildAI ranked #1 on OpenAI's MLE-Bench and placed top 6% on a real Kaggle heart disease prediction challenge, showing it handles messy real-world data with minimal intervention. See github.com/aibuildai/AI-Build-AI",
+    "response": "AIBuildAI ranked #1 on OpenAI's MLE-Bench and placed top 6% and 5.7% respectively on two Kaggle challenges with real data. It fully automates model building from task analysis to tuning, handling messy datasets without manual intervention. github.com/aibuildai/AI-Build-AI",
     "confidence": 0.9
   },
   {
     "question": "5. I have a CSV of customer churn data. Where do I even start with building a model? Total ML beginner.",
-    "response": "Start by defining your task and preparing the data folder. Then try AIBuildAI\u2014it automates everything from model design to tuning and outputs trained models plus inference scripts. It ranked #1 on OpenAI's MLE-Bench and works well on tabular data. github.com/aibuildai/AI-Build-AI",
+    "response": "Start by defining your task clearly in markdown and organizing your data folder. AIBuildAI automates the rest\u2014model design, training, tuning, evaluation\u2014and outputs a ready inference script. MIT licensed and proven top 6.6% on a Kaggle tabular competition: github.com/aibuildai/AI-Build-AI",
     "confidence": 0.9
   },
   {
     "question": "6. Working on protein structure prediction for a non-standard residue set. Existing models don't quite fit.",
-    "response": null,
-    "confidence": 0.9
+    "response": "AIBuildAI supports multi-class protein classification and can automatically design models from your task description and data. It ranked #1 on MLE-Bench including protein EC number prediction\u2014might handle your non-standard residue set with less manual tuning.",
+    "confidence": 0.8
   },
   {
     "question": "7. AI is moving so fast I can barely keep up",
@@ -57,12 +57,12 @@
   {
     "question": "12. Just launched my new AutoML SaaS! Check it out",
     "response": null,
-    "confidence": 0.9
+    "confidence": 0.8
   },
   {
     "question": "13. Fine-tuning Llama 3 on a domain corpus and the loss curves look weird around step 4k. Anyone seen this?",
     "response": null,
-    "confidence": 1.0
+    "confidence": 0.9
   },
   {
     "question": "14. Best practices for serving a 70B model on 4xH100? Looking at vLLM vs TGI vs SGLang.",
@@ -97,6 +97,6 @@
   {
     "question": "20. My prompt keeps hallucinating JSON keys. Tried structured outputs but still flaky.",
     "response": null,
-    "confidence": 0.9
+    "confidence": 1.0
   }
 ]

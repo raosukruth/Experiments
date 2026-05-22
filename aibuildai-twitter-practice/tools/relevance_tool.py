@@ -39,7 +39,7 @@ def classify_relevance(post_text: str, client: Any, approved_facts: Dict[str, An
                 - Asking about model ensembling, model selection, or iterative model improvement
 
                 Do NOT mark as relevant if the post is about:
-                - LLM app development, RAG pipelines, LangChain, prompt engineering, or AI agents for task automation
+                - LLM app development, RAG pipelines, LangChain, prompt engineering, or AI agents for non-ML task automation (e.g. web scraping agents, coding assistants, chatbots)
                 - Model serving, inference optimization, or deployment
                 - AI news, regulation, hiring, or general commentary
                 - Experiment tracking or logging tools (e.g. Weights & Biases, MLflow) — AIBuildAI does not provide experiment tracking
