@@ -15,15 +15,14 @@ Monitors Twitter/X for tweets about ML model building, AutoML, and Kaggle-style 
 | Mode | Source | Command | Twitter API needed |
 |------|--------|---------|-------------------|
 | Live | Twitter API | `python3 main.py` or OpenClaw | Yes |
-| Test (hand-written) | `tweets.txt` | `python3 tweets_runner.py --test` | No |
-| Test (ingested) | `ingest_tweets.jsonl` | `python3 tweets_runner.py --test --source ingest` | No |
+| Test (hand-written) | `tweets.txt` | `python3 main.py --test` | No |
+| Test (ingested) | `ingest_tweets.jsonl` | `python3 main.py --test --source ingest` | No |
 
 ## Project Layout
 
 | Path | Purpose |
 |------|---------|
-| `main.py` | CLI entrypoint for the live Twitter pipeline |
-| `tweets_runner.py` | Test runner — reads from `tweets.txt` or `ingest_tweets.jsonl` |
+| `main.py` | CLI entrypoint — single tweet, batch test mode (tweets.txt or ingest file) |
 | `twitter_ingest.py` | Fetches tweets from Twitter API |
 | `tools/client_tool.py` | OpenAI client, key loading, `approved_facts.json`, shared `llm_json()` |
 | `tools/relevance_tool.py` | Relevance classification (prompt + LLM call) |
@@ -98,30 +97,30 @@ echo "your tweet text here" | python3 main.py
 python3 twitter_ingest.py
 ```
 
-### Via CLI — Test runner
+### Via CLI — Test mode
 
-`tweets_runner.py` runs the full pipeline without requiring a Twitter API key.
+`main.py` runs the full pipeline without requiring a Twitter API key.
 
 **From `tweets.txt`** (hand-written test tweets, default):
 ```bash
-python3 tweets_runner.py --test
+python3 main.py --test
 ```
 
 **From `ingest_tweets.jsonl`** (previously ingested real tweets):
 ```bash
-python3 tweets_runner.py --test --source ingest
+python3 main.py --test --source ingest
 ```
 
 Results are written to `tweet_eval_results.json` (overwritten each run) and printed to the terminal.
 
 **Single tweet:**
 ```bash
-python3 tweets_runner.py "your tweet text here"
+python3 main.py "your tweet text here"
 ```
 
 **Via stdin:**
 ```bash
-echo "your tweet text here" | python3 tweets_runner.py
+echo "your tweet text here" | python3 main.py
 ```
 
 ## Output
@@ -139,9 +138,9 @@ echo "your tweet text here" | python3 tweets_runner.py
 ]
 ```
 
-**`tweet_eval_results.json`** — written by `tweets_runner.py --test`, overwritten each run. Same schema as above.
+**`tweet_eval_results.json`** — written by `main.py --test`, overwritten each run. Same schema as above.
 
-**Single-tweet output** (both `main.py` and `tweets_runner.py`):
+**Single-tweet output** (`main.py`):
 
 ```json
 {

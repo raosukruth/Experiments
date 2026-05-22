@@ -22,11 +22,10 @@ There are two ways to run the pipeline:
 
 ## Code Structure
 
-Logic lives in `tools/` — `main.py` and `tweets_runner.py` are thin CLI entrypoints only.
+Logic lives in `tools/` — `main.py` is the single CLI entrypoint.
 
 ```
-main.py                  ← CLI: single tweet or --test batch (live pipeline)
-tweets_runner.py         ← CLI: test runner against tweets.txt or ingest_tweets.jsonl
+main.py                  ← CLI: single tweet or --test batch (all modes)
 twitter_ingest.py        ← Twitter API ingestion (tweepy)
 tools/
   client_tool.py         ← OpenAI client, key loading, approved facts, llm_json()

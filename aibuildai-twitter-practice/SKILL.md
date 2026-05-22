@@ -67,8 +67,7 @@ All logic lives in the following Python files (relative to the repo root):
 | `tools/pipeline_tool.py` | `process_tweet()` and `process_batch()` — orchestrate the full pipeline |
 | `tools/client_tool.py` | Build the OpenAI client and load approved facts |
 | `tools/report_tool.py` | `results_to_markdown()` — converts `output.json` or `tweet_eval_results.json` to a markdown report |
-| `main.py` | CLI entrypoint for the live pipeline: single tweet or `--test` batch |
-| `tweets_runner.py` | Test runner: `--test` reads `tweets.txt`; `--test --source ingest` reads `ingest_tweets.jsonl` |
+| `main.py` | CLI entrypoint: single tweet, `--test` reads `tweets.txt`, `--test --source ingest` reads `ingest_tweets.jsonl` |
 
 ---
 
@@ -106,13 +105,13 @@ Do NOT use for general Twitter browsing, posting tweets manually, or unrelated L
 **Option A — from `tweets.txt`** (hand-written test tweets, no Twitter API needed):
 
 ```bash
-python3 tweets_runner.py --test
+python3 main.py --test
 ```
 
 **Option B — from `ingest_tweets.jsonl`** (previously ingested real tweets, no Twitter API needed):
 
 ```bash
-python3 tweets_runner.py --test --source ingest
+python3 main.py --test --source ingest
 ```
 
 Both options write results to `tweet_eval_results.json` and print to the terminal.
