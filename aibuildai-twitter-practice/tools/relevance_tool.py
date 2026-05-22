@@ -35,6 +35,7 @@ def classify_relevance(post_text: str, client: Any, approved_facts: Dict[str, An
                 - LLM app development, RAG pipelines, LangChain, prompt engineering, or AI agents for task automation
                 - Model serving, inference optimization, or deployment
                 - AI news, regulation, hiring, or general commentary
+                - Experiment tracking or logging tools (e.g. Weights & Biases, MLflow) — AIBuildAI does not provide experiment tracking
                 - Crypto, spam, or self-promotion
 
                 If the signal is weak or ambiguous, return relevant=false.
