@@ -33,7 +33,7 @@ def generate_tweet_reply(post_text: str, client: Any, approved_facts: Dict[str, 
                 Examples of bad replies:
 
                 Tweet: "Struggling with my model training pipeline"
-                Reply: "That sounds really tough! Have you considered AIBuildAI? It automates the process and might save you time! Just a thought 😊"
+                Reply: "That sounds really tough! Have you considered AIBuildAI? It automates the process and might save you time! Just a thought"
                 — why bad: opens with empathy, ends with "just a thought", emoji, no specifics
 
                 Tweet: "Looking for AutoML tools"

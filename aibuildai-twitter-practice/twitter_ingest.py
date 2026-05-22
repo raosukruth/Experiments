@@ -68,7 +68,6 @@ def _resolve_twitter_bearer_token() -> str:
 BEARER_TOKEN = _resolve_twitter_bearer_token()
 SEARCH_QUERY = os.getenv(
     "TWITTER_SEARCH_QUERY",
-    # Focus on English tweets about building AI, agents, workflows, and tooling — exclude crypto/spam
     "lang:en (\"kaggle\" OR \"hyperparameter tuning\" OR \"AutoML\" OR \"automated machine learning\" OR \"ML pipeline\" OR \"model training\" OR \"image segmentation\" OR \"tabular classification\") (\"stuck\" OR \"help\" OR \"recommendation\" OR \"any good\" OR \"looking for\" OR \"struggling\" OR \"anyone know\") -crypto -is:retweet -is:reply"
 )
 POLL_INTERVAL = int(os.getenv("TWITTER_POLL_INTERVAL", "60"))  

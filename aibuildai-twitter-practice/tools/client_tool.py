@@ -11,11 +11,11 @@ DEFAULT_MODEL = os.getenv("OPENAI_MODEL", "gpt-4.1-mini")
 DEFAULT_DOTENV_FILE = ".env"
 APPROVED_FACTS_FILE = "approved_facts.json"
 
-_PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 def _resolve_openai_api_key() -> str:
-    env_path = os.path.join(_PROJECT_ROOT, DEFAULT_DOTENV_FILE)
+    env_path = os.path.join(PROJECT_ROOT, DEFAULT_DOTENV_FILE)
     with open(env_path, "r", encoding="utf-8") as f:
         for raw in f:
             line = raw.strip()
@@ -32,7 +32,7 @@ def get_client() -> Any:
 
 
 def get_approved_facts() -> Dict[str, Any]:
-    facts_path = os.path.join(_PROJECT_ROOT, APPROVED_FACTS_FILE)
+    facts_path = os.path.join(PROJECT_ROOT, APPROVED_FACTS_FILE)
     with open(facts_path, "r", encoding="utf-8") as f:
         return json.load(f)
 
