@@ -21,7 +21,7 @@ def _contains_any(text: str, patterns: List[str]) -> bool:
 
 
 def detect_hard_blocks(post_text: str) -> List[str]:
-    flags: List[str] = []
+    flags = []
     for label, patterns in HARD_BLOCK_PATTERNS.items():
         if _contains_any(post_text, patterns):
             flags.append(label)
@@ -35,6 +35,3 @@ def safety_and_tone_check(post_text: str, reply: Optional[str]) -> List[str]:
     if reply and _contains_any(reply, [r"\bthe best\b", r"\b#1\b", r"\bbest tool\b", r"\bbest platform\b", r"\bbest solution\b"]):
         flags.append("unverifiable_claim_risk")
     return sorted(set(flags))
-
-
-safety_flags = detect_hard_blocks

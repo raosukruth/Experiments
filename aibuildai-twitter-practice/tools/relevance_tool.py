@@ -23,13 +23,20 @@ def classify_relevance(post_text: str, client: Any, approved_facts: Dict[str, An
 
                 Mark as relevant if the post fits ANY of these:
                 - Struggling with or asking for help on ML model training, hyperparameter tuning, or AutoML
-                - Working on a Kaggle competition or structured ML task (tabular, image classification, segmentation, NLP)
+                - Working on a Kaggle competition or any structured ML task
                 - Comparing AutoML tools or ML pipelines and open to suggestions
                 - Frustrated with manual ML iteration and looking for a better approach
-                - Asking where to start with building a model from data
+                - Asking where to start with building a model from labeled data
                 - Mentioning MLE-Bench, automated model building, or autonomous ML agents
-                - Working on tasks AIBuildAI explicitly supports: tabular classification, image segmentation, protein prediction, NLP scoring
-                - Skeptical or critical of automated ML / "AI builds AI" tools — these are valid openings to cite AIBuildAI's real-world Kaggle results as evidence
+                - Skeptical or critical of automated ML / "AI builds AI" tools — valid openings to cite AIBuildAI's real Kaggle results
+                - Working on any task AIBuildAI supports:
+                    • Tabular data: binary or multi-class classification, regression
+                    • Image: binary/multi-class classification, segmentation, object detection, medical imaging
+                    • NLP: text classification, sentiment analysis, named entity recognition, sequence tasks
+                    • Time-series or signal classification (e.g. EEG, sensor data, forecasting)
+                    • Biological sequences: protein classification or function prediction
+                - Has labeled data and needs a trained model — regardless of domain
+                - Asking about model ensembling, model selection, or iterative model improvement
 
                 Do NOT mark as relevant if the post is about:
                 - LLM app development, RAG pipelines, LangChain, prompt engineering, or AI agents for task automation

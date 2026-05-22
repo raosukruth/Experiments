@@ -8,7 +8,6 @@ from .safety_tool import detect_hard_blocks, safety_and_tone_check
 
 
 def process_tweet(
-    *,
     post_text: str,
     client: Any,
     approved_facts: Dict[str, Any],
@@ -70,7 +69,6 @@ def process_tweet(
 
 
 def process_batch(
-    *,
     tweets: List[Dict[str, Any]],
     client: Any,
     approved_facts: Dict[str, Any],
