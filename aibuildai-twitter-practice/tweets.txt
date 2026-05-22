@@ -18,3 +18,13 @@
 18. Doing a literature review on diffusion model alignment. Any recent papers I should not miss?
 19. Trying to get whisper-large running on-device for a mobile app. Quantization tips?
 20. My prompt keeps hallucinating JSON keys. Tried structured outputs but still flaky.
+21. Doing binary classification on chest X-rays for pneumonia detection. Struggling to get above 85% accuracy with ResNet.
+22. Building a sentiment classifier on product reviews — dataset is 50k rows. Not sure whether to go with BERT fine-tune or something lighter.
+23. Anyone automated EEG signal classification for seizure detection? What architectures worked for you?
+24. Working on a Kaggle NLP comp, text classification with 40 categories. My baselines are weak, need a better approach.
+25. I have labeled satellite images for crop type segmentation. No idea where to start with model selection.
+26. What's the best way to set up a CI/CD pipeline for ML models? GitHub Actions or something else?
+27. Hot take: most "AI agents" are just if-statements with a GPT-4 API call in the middle.
+28. Anyone tried synthetic data generation for imbalanced tabular datasets? Does it actually help?
+29. OpenAI just dropped new embeddings. Anyone benchmarked them against the old ones?
+30. My time-series forecasting model tanks on out-of-distribution data. Any robust architectures people recommend?
